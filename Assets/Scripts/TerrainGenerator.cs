@@ -6,46 +6,99 @@ using UnityEngine.Tilemaps;
 public class TerrainGenerator : MonoBehaviour
 {
 
-	public Sprite grassTileSprite;
-	public Sprite sandTileSprite;
-	public Sprite seaTileSprite;
-	public Sprite mountainTileSprite;
+	public List<Sprite> tileSprites = new List<Sprite>();
+	public int baseThreshold = 300;
+	public int sandThreshold=50;
+	
+	public int grassThreshold=50;
+	public int mountainThreshold=30;
+	public int mountainUpLim = 40;
+	public int mountainSporadicity=69;
+	public int robotBaseSporadicity = 100;
+	public int mountainSpread=7;
+	[SerializeField]
+	bool change = false;
+	public GameObject reactor; 
 
-    // Start is called before the first frame update
-    void Start()
+
+	// Start is called before the first frame update
+	void Start()
     {
-		Tile grassTile = new Tile();
-		grassTile.sprite = grassTileSprite;
-		tiles.Add(Type.Grass, grassTile);
+		int counter = 0;
+		foreach (Type type in Type.GetValues(typeof(Type)))
+        {
+			
+			Tile tile = ScriptableObject.CreateInstance<Tile>();
+			tile.sprite = tileSprites[counter];
+			counter++;
+			tiles.Add(type, tile);
 
-		Tile sandTile = new Tile();
-		sandTile.sprite = sandTileSprite;
-		tiles.Add(Type.Sand, sandTile);
+        }
 
-		Tile seaTile = new Tile();
-		seaTile.sprite = seaTileSprite;
-		tiles.Add(Type.Water, seaTile);
-
-
-		Tile mountainTile = new Tile();
-		mountainTile.sprite = mountainTileSprite;
-		tiles.Add(Type.Mountain, mountainTile);
-
-
+	
 		generateLevel();
 		populateTilemap();
 
     }
 
+
+	void regenerate()
+    {
+		levelx = new double[DATA_SIZE, DATA_SIZE];
+		
+		generateLevel();
+        while (average() < baseThreshold + sandThreshold + mountainThreshold + grassThreshold)
+        {
+			generateLevel();
+        }
+		populateTilemap();
+    }
+
     // Update is called once per frame
     void Update()
     {
-        
+        if (change)
+        {
+			change = false;
+			while (average() < baseThreshold + sandThreshold + mountainThreshold + grassThreshold)
+			{
+
+				generateLevel();
+			}
+			regenerate();
+        }
     }
+
+
+	public void populateMap()
+    {
+
+    }
+
+
+
+
 	public Tilemap tilemap;
 	public Dictionary<Type, Tile> tiles = new Dictionary<Type, Tile>();
 	static int DATA_SIZE = 257;
 	public static double[,] levelx = new double[DATA_SIZE,DATA_SIZE];
+
+
+	public int average()
+    {
+
+		int count = 0;
+		int average = 0;
+		for (int i = 0; i < DATA_SIZE-2; i+=2)
+		{
+			for (int j = 0; j < DATA_SIZE-2; j+=2)
+			{
+				average += (int)levelx[i, j];
+				count++;
+			}
+		}
+		return average / count;
+	}
 
 
 	public void populateTilemap()
@@ -56,33 +109,39 @@ public class TerrainGenerator : MonoBehaviour
             {
 				double data = levelx[i, j];
 
-				tilemap.SetTile(new Vector3Int(i, j, 0),GetTileFromData(data));
+				tilemap.SetTile(new Vector3Int(i, j, 0),GetTileFromData(data,i,j));
             }
         }
     }
 
 
 
-	private Tile GetTileFromData(double data)
+	private Tile GetTileFromData(double data, int x, int y)
     {
-		if(data>=600 && data <= 735)
+		if(data>=baseThreshold + sandThreshold && data <= baseThreshold + sandThreshold+mountainThreshold)
         {
 			return tiles[Type.Sand];
         }
-		else if (data > 735 && data < 750)
+		else if (data > baseThreshold + sandThreshold+ mountainThreshold && data < baseThreshold + sandThreshold + mountainThreshold+grassThreshold)
 		{
            
 			return tiles[Type.Mountain];
 			
-            
 			
 		}
-		else if(data>735)
+		else if(data> baseThreshold + sandThreshold + mountainThreshold + grassThreshold)
         {
-            if ((int)data % 69 <= 7)
+			if ((int)data % robotBaseSporadicity == 0 && data - (int)data < 0.02)
+			{
+				Reactor.reactors.Add(Instantiate(reactor, new Vector3(tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)).x, tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)).y, 0), Quaternion.identity));
+				return tiles[Type.Robot];
+				
+			}
+			else if((int)data % mountainSporadicity <= mountainSpread&& (int)data < baseThreshold + sandThreshold + mountainThreshold +mountainUpLim && data- (int)data <30f/mountainSporadicity)
             {
 				return tiles[Type.Mountain];
 			}
+			
 			return tiles[Type.Grass];
         }
 		
@@ -95,19 +154,20 @@ public class TerrainGenerator : MonoBehaviour
 
 	public static void generateLevel()
 	{
+		Reactor.ClearList();
 		//for (int i = 0; i < Types.length; i++)
 		//{
 		//	tileSetImgs.put(Types[i], GameEntity.getImage("tileset/" + Types[i] + ".png"));
 		//}
 
 
-
+		
 
 		//size of grid to generate, note this must be a
 		//value 2^n+1
 		 
 		//an initial seed value for the corners of the levelx
-		 double SEED = 1000.0;
+		 double SEED = 1000.0*(Random.value);
 		//seed the levelx
 		levelx[0,0] = levelx[0,DATA_SIZE - 1] = levelx[DATA_SIZE - 1,0] = levelx[DATA_SIZE - 1,DATA_SIZE - 1] = SEED;
 
@@ -159,6 +219,7 @@ public class TerrainGenerator : MonoBehaviour
 			//by half side
 			//NOTE: if the levelx shouldn't wrap then x < DATA_SIZE
 			//to generate the far edge values
+			
 			for (int x = 0; x < DATA_SIZE - 1; x += halfSide)
 			{
 				//and y is x offset by half a side, but moved by
@@ -186,21 +247,24 @@ public class TerrainGenerator : MonoBehaviour
 					avg = avg + (rand * 2 * h) - h;
 					//update value for center of diamond
 					levelx[x,y] = avg;
-
+					
 					//wrap values on the edges, remove
 					//this and adjust loop condition above
 					//for non-wrapping values.
 					if (x == 0) levelx[DATA_SIZE - 1,y] = avg;
 					if (y == 0) levelx[x,DATA_SIZE - 1] = avg;
+					
 				}
 			}
+			
+
 		}
-		Debug.Log("Complete");
+		
 	
 	}
 	public enum Type
 	{
-		Grass, Dirt, Sand, Water, Lava, Stairs, Mountain
+		Grass, Sand, Water, Mountain, Robot
 	}
 
 }

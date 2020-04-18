@@ -337,10 +337,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce20aa847f333c34e811f5eb6e346583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grassTileSprite: {fileID: 21300000, guid: 43656788e4231b343ab294e2987accad, type: 3}
-  sandTileSprite: {fileID: 21300000, guid: c5f154461e045e947b2d20f720a8a6ae, type: 3}
-  seaTileSprite: {fileID: 21300000, guid: 391140e578d73e6419948b93f13c7389, type: 3}
-  mountainTileSprite: {fileID: 21300000, guid: 6e3e02b978b26ad42b10838d103ce572, type: 3}
+  tileSprites:
+  - {fileID: 21300000, guid: 43656788e4231b343ab294e2987accad, type: 3}
+  - {fileID: 21300000, guid: c5f154461e045e947b2d20f720a8a6ae, type: 3}
+  - {fileID: 21300000, guid: 391140e578d73e6419948b93f13c7389, type: 3}
+  - {fileID: 21300000, guid: 6e3e02b978b26ad42b10838d103ce572, type: 3}
+  - {fileID: 21300000, guid: 3f68362827a61ae4da22cff21fc4cc80, type: 3}
+  baseThreshold: 300
+  sandThreshold: 250
+  grassThreshold: 50
+  mountainThreshold: 50
+  mountainUpLim: 1130
+  mountainSporadicity: 69
+  robotBaseSporadicity: 101
+  mountainSpread: 7
+  change: 1
+  reactor: {fileID: 1786107847379513477, guid: f9e8cc5540fadde4fbe0830a4d6223bb, type: 3}
   tilemap: {fileID: 1136387289}
 --- !u!1 &1218940969
 GameObject:
@@ -385,4 +397,70 @@ Transform:
   - {fileID: 1136387287}
   m_Father: {fileID: 0}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1930244005
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1930244008}
+  - component: {fileID: 1930244007}
+  - component: {fileID: 1930244006}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1930244006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930244005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+--- !u!114 &1930244007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930244005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!4 &1930244008
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930244005}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
