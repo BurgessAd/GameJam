@@ -217,6 +217,7 @@ GameObject:
   - component: {fileID: 1136387287}
   - component: {fileID: 1136387289}
   - component: {fileID: 1136387288}
+  - component: {fileID: 1136387290}
   m_Layer: 0
   m_Name: Tilemap
   m_TagString: Untagged
@@ -282,7 +283,7 @@ TilemapRenderer:
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
-  m_SortOrder: 0
+  m_SortOrder: 2
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
@@ -324,6 +325,23 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &1136387290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1136387286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce20aa847f333c34e811f5eb6e346583, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grassTileSprite: {fileID: 21300000, guid: 43656788e4231b343ab294e2987accad, type: 3}
+  sandTileSprite: {fileID: 21300000, guid: c5f154461e045e947b2d20f720a8a6ae, type: 3}
+  seaTileSprite: {fileID: 21300000, guid: 391140e578d73e6419948b93f13c7389, type: 3}
+  mountainTileSprite: {fileID: 21300000, guid: 6e3e02b978b26ad42b10838d103ce572, type: 3}
+  tilemap: {fileID: 1136387289}
 --- !u!1 &1218940969
 GameObject:
   m_ObjectHideFlags: 0
