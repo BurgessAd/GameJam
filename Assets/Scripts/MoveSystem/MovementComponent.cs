@@ -9,22 +9,26 @@ public class MovementComponent : MonoBehaviour
 
     private Rigidbody2D body;
 
-    [SerializeField]
-    [Range(0, 10.0f)]
-    float movementSpeed;
+    private SharedProperties movementSpeed;
+    private SharedProperties acceleration;
 
     [SerializeField]
-    [Range(0, 0.1f)]
-    float moveChangePerFrame;
-
-
     AnimationCurve accelerationCurve;
 
-
+    [SerializeField]
     AnimationCurve deccelerationCurve;
+
+    private LowerAnimator lowerAnimator;
+
+    public void SetMovementSpeed(SharedProperties movementSpeed, SharedProperties acceleration)
+    {
+        this.movementSpeed = movementSpeed;
+        this.acceleration = acceleration;
+    }
 
     private void Awake()
     {
+        lowerAnimator = GetComponentInChildren<LowerAnimator>();
         body = GetComponent<Rigidbody2D>();
         Cursor.visible = false;
     }
@@ -36,7 +40,7 @@ public class MovementComponent : MonoBehaviour
 
     void Update()
     {
-        Animate();
+        lowerAnimator.SetAnimationState(body.velocity);
     }
 
     public void SetDesiredSpeed(Vector2 newDesiredSpeed)
@@ -51,14 +55,9 @@ public class MovementComponent : MonoBehaviour
 
     private void Move()
     {
-        currentMoveSpeed.x = Mathf.Clamp(currentMoveSpeed.x + Mathf.Sign(desiredMoveSpeed.x - currentMoveSpeed.x) * Mathf.Clamp(Mathf.Abs(desiredMoveSpeed.x - currentMoveSpeed.x), 0, moveChangePerFrame), -1.0f, 1.0f);
-        currentMoveSpeed.y = Mathf.Clamp(currentMoveSpeed.y + Mathf.Sign(desiredMoveSpeed.y - currentMoveSpeed.y) * Mathf.Clamp(Mathf.Abs(desiredMoveSpeed.y - currentMoveSpeed.y), 0, moveChangePerFrame), -1.0f, 1.0f);
+        currentMoveSpeed.x = Mathf.Clamp(currentMoveSpeed.x + Mathf.Sign(desiredMoveSpeed.x - currentMoveSpeed.x) * Mathf.Clamp(Mathf.Abs(desiredMoveSpeed.x - currentMoveSpeed.x), 0, acceleration.Value), -1.0f, 1.0f);
+        currentMoveSpeed.y = Mathf.Clamp(currentMoveSpeed.y + Mathf.Sign(desiredMoveSpeed.y - currentMoveSpeed.y) * Mathf.Clamp(Mathf.Abs(desiredMoveSpeed.y - currentMoveSpeed.y), 0, acceleration.Value), -1.0f, 1.0f);
 
-        body.velocity = new Vector2(currentMoveSpeed.x * movementSpeed, currentMoveSpeed.y * movementSpeed);
-    }
-
-    private void Animate()
-    {
-
+        body.velocity = new Vector2(currentMoveSpeed.x * movementSpeed.Value, currentMoveSpeed.y * movementSpeed.Value);
     }
 }

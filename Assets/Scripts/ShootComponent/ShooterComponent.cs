@@ -7,28 +7,24 @@ public enum FireStyle
     Barrage
 }
 
-[RequireComponent(typeof(AttackAnimator))]
 public class ShooterComponent : MonoBehaviour
 {
     private GunComponent[] gunComponents;
 
     [SerializeField]
     FireStyle fireStyle = FireStyle.Barrage;
-
-    [SerializeField]
     private SharedProperties fireDelay;
 
     bool currentShootState;
     bool coroutineStarted = false;
 
+    public void SetFireDelay(SharedProperties fireDelay)
+    {
+        this.fireDelay = fireDelay;
+    }
     private void Awake()
     {
         gunComponents = GetComponentsInChildren<GunComponent>();
-        if (fireDelay == null)
-        {
-            fireDelay = ScriptableObject.CreateInstance<SharedProperties>() as SharedProperties;
-            fireDelay.Value = 2.0f;
-        }
     }
     public void SetShootState(bool newShootState)
     {
@@ -54,7 +50,7 @@ public class ShooterComponent : MonoBehaviour
                 {
                     break;
                 }
-                gunComponents[i].FireWeapon();
+                gunComponents[i].FireWeapon(fireDelay.Value);
                 if (fireStyle.Equals(FireStyle.Barrage))
                 {
                     yield return new WaitForSeconds(fireDelay.Value / gunComponents.Length);

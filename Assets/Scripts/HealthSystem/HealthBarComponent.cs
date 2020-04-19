@@ -14,7 +14,7 @@ public class HealthBarComponent : MonoBehaviour
         healthBarImage.GetComponent<SpriteRenderer>().color = Color.green;
         healthBarImage.transform.parent = gameObject.transform;
         
-        GetComponent<HealthComponent>().OnCurrentHealthChanged += HealthChanged;
+        GetComponentInParent<HealthComponent>().OnCurrentHealthChanged += HealthChanged;
         healthBarImage.transform.RotateAround(healthBarImage.transform.parent.position, new Vector3(0, 0, 1), -healthBarImage.transform.parent.eulerAngles.z);
         healthBarImage.transform.position += new Vector3(0, 0.8f, 0);
     }
