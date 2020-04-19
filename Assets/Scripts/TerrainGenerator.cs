@@ -75,7 +75,7 @@ public class TerrainGenerator : MonoBehaviour
         if (change)
         {
 			change = false;
-			while (average() < baseThreshold + sandThreshold + mountainThreshold + grassThreshold)
+			while (average() < baseThreshold + sandThreshold + mountainThreshold + grassThreshold&& Reactor.reactors.Count<5)
 			{
 
 				generateLevel();
@@ -159,7 +159,7 @@ public class TerrainGenerator : MonoBehaviour
 		}
 		else if(data> baseThreshold + sandThreshold + mountainThreshold + grassThreshold)
         {
-			if ((int)data % robotBaseSporadicity == 0 && data - (int)data < 0.02)
+			if ((int)data % robotBaseSporadicity == 0 && Random.value>0.99f)
 			{
 				int numOfTilesToReplace = 1;
 				for(int i = x - numOfTilesToReplace; i <= x + numOfTilesToReplace; i++)

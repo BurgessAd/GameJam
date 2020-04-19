@@ -19,7 +19,7 @@ public class InventoryComponent : MonoBehaviour
         for (int i = 0; i < Container.Count; i++)
         {
             GameObject newItem = new GameObject();
-            Transform thisTransform = newItem.AddComponent<Transform>();
+            Transform thisTransform = newItem.transform;
             ItemObjectPickable pickableObject = newItem.AddComponent<ItemObjectPickable>();
             pickableObject.SetItemObject(Container[i].item, Container[i].currentAmount);
             thisTransform.position = gameObject.transform.position;

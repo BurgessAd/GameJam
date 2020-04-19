@@ -8,7 +8,7 @@ public class CameraLookComponent : MonoBehaviour
     [SerializeField]
     float lookLength;
 
-    private Transform playerTransform;
+    private static Transform playerTransform;
     private Transform camTransform;
     private Camera playerCamera;
     private void Awake()
@@ -22,6 +22,12 @@ public class CameraLookComponent : MonoBehaviour
     {
         CameraFollow();
     }
+
+    public void ChangeCameraFocus(GameObject go)
+    {
+        playerTransform = go.transform;
+    }
+
 
     private void CameraFollow()
     {

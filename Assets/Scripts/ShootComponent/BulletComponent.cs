@@ -10,12 +10,13 @@ public class BulletComponent : MonoBehaviour
     float bulletSpeed = 10.0f;
     [SerializeField]
     float bulletSurviveTime = 1.0f;
-
+    float time;
     float currentBulletTime = 0.0f;
-
+    private GameObject shooter;
     private Transform bulletTransform;
     void Awake()
     {
+        time = Time.time;
         bulletTransform = GetComponent<Transform>();
     }
 
@@ -31,10 +32,16 @@ public class BulletComponent : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Destroy(gameObject);
-        if (collision.GetComponent<HealthComponent>())
+        if(Time.time - time>0.02f)
         {
-            collision.GetComponent<HealthComponent>().ProcessHit(bulletDamage);
+            Debug.Log(collision.gameObject.name);
+            Destroy(gameObject);
+            if (collision.GetComponent<HealthComponent>())
+            {
+                collision.GetComponent<HealthComponent>().ProcessHit(bulletDamage);
+            }
         }
+
+        
     }
 }

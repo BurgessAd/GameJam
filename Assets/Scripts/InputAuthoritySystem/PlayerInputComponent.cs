@@ -20,6 +20,7 @@ public class PlayerInputComponent : InputComponent
         return Camera.main.ScreenToWorldPoint(Input.mousePosition) - targetTransformComponent.position;
     }
 
+
     public override Vector2 GetMoveDirection()
     {
         Vector2 desiredMovementSpeed = Vector2.zero;

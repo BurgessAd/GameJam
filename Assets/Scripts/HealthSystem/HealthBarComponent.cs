@@ -12,6 +12,7 @@ public class HealthBarComponent : MonoBehaviour
     private GameObject healthBarImage;
     private Quaternion rotation;
     private Vector3 position;
+    private float baseScale;
     private float scale;
     void Start()
     {
@@ -22,12 +23,28 @@ public class HealthBarComponent : MonoBehaviour
         healthBarImage.transform.parent = gameObject.transform;
         healthBarImage.GetComponent<SpriteRenderer>().sortingOrder = 2;
         GetComponent<HealthComponent>().OnCurrentHealthChanged += HealthChanged;
-        scale = GetComponent<SpriteRenderer>().sprite.textureRect.height / 128f;
+        if (GetComponent<SpriteRenderer>() != null)
+        {
+            scale = GetComponent<SpriteRenderer>().sprite.textureRect.height / 128f;
+        }
+        else
+        {
+            foreach(Transform child in gameObject.transform)
+            {
+                if (child.gameObject.GetComponent<SpriteRenderer>().sprite != null)
+                {
+                    scale = child.gameObject.GetComponent<SpriteRenderer>().sprite.textureRect.height / 128f;
+                    break;
+                }
+                
+            }
+        }
+        
         //healthBarImage.transform.RotateAround(healthBarImage.transform.parent.position, new Vector3(0, 0, 1), -healthBarImage.transform.parent.eulerAngles.z);
         rotation = healthBarImage.transform.rotation;
         position = healthBarImage.transform.position;
         healthBarImage.transform.localScale *= scale;
-        
+        baseScale = healthBarImage.transform.localScale.x;
         healthBarImage.transform.position += new Vector3(0,0.8f*scale, 0);
 
         
@@ -36,7 +53,10 @@ public class HealthBarComponent : MonoBehaviour
     }
     void HealthChanged(float newHealthPercentage)
     {
-        healthBarImage.transform.localScale = new Vector3(newHealthPercentage / 100, healthBarImage.transform.localScale.y, healthBarImage.transform.localScale.z)*scale;
+        Debug.Log(newHealthPercentage);
+        Debug.Log(scale * newHealthPercentage);
+        healthBarImage.transform.localScale = new Vector3(newHealthPercentage * baseScale, healthBarImage.transform.localScale.y, healthBarImage.transform.localScale.z);
+
        
     }
     void LateUpdate()
