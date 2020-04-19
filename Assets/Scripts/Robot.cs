@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Robot : MonoBehaviour
 {
-    public GameObject player;
+    public static GameObject player;
     public int lookDistance;
     // Start is called before the first frame update
     void Start()
     {
-       player = GameObject.Find("Player");
+       
     }
 
     // Update is called once per frame
@@ -18,7 +18,12 @@ public class Robot : MonoBehaviour
         Vector2 diff = (Vector2)(player.transform.position - gameObject.transform.position);
         if (diff.magnitude < lookDistance)
         {
-
+            Shoot();
         }
+    }
+
+    void Shoot()
+    {
+
     }
 }

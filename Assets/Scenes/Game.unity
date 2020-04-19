@@ -281,9 +281,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 656624932}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ded5658bf5ecfa6419a7825049b0cad0, type: 3}
+  m_Script: {fileID: 11500000, guid: d1ffad9beafe9b94f9a446b95f3452bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lookSpeed: {fileID: 0}
+--- !u!114 &656624934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656624932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0aba7fe49577be4a9e0a5222ddd72b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseLookDirection: {fileID: 656624933}
+  moveDirection: {fileID: 656624939}
+  shootState: {fileID: 656624947}
+  controllingInput: {fileID: 656624940}
 --- !u!114 &656624936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -371,6 +388,33 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &656624947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656624932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbcefce2fd3743f40b140c393292c2da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireStyle: 1
+  fireDelay: {fileID: 0}
+--- !u!114 &656624948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656624932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 025811eb51d9b9d4bbdd2dd06fb7ce7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
 --- !u!1 &1136387286
 GameObject:
   m_ObjectHideFlags: 0

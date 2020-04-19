@@ -40,7 +40,7 @@ public class TerrainGenerator : MonoBehaviour
 
 
 		regenerate();
-        
+		Robot.player = player;
 	
     }
 
