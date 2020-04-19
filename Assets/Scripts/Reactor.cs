@@ -12,13 +12,6 @@ public class Reactor : MonoBehaviour
     public GameObject robot;
     
 
-
-
-    public GameObject powerBar;
-    public GameObject moderatorBar;
-    public float maxPower = 100;
-    public float maxModerator = 100;
-    public float maxHealth = 100;
     public int numRobots;
     private int count =0;
     public bool isPlayer = false;
@@ -31,7 +24,9 @@ public class Reactor : MonoBehaviour
         
         if (isPlayer)
         {
-
+            powerBar.GetComponent<SpriteRenderer>().color = Color.cyan;
+            powerBar.transform.RotateAround(gameObject.transform.position, new Vector3(0, 0, 1), -gameObject.transform.eulerAngles.z);
+            moderatorBar.transform.RotateAround(gameObject.transform.position, new Vector3(0, 0, 1), -gameObject.transform.eulerAngles.z);
         }
         else
         {
@@ -39,12 +34,12 @@ public class Reactor : MonoBehaviour
             moderatorBar.transform.localScale = Vector3.zero;
         }
 
-        for(int i = 0; i < numRobots; i++)
-        {
-            Vector2 place = Random.insideUnitCircle;
-            place = place.normalized;
-            robots.Add(Instantiate(robot, gameObject.transform.position+new Vector3(place.x,place.y,0)*5, Quaternion.identity));
-        }
+        //for(int i = 0; i < numRobots; i++)
+        //{
+        //    Vector2 place = Random.insideUnitCircle;
+        //    place = place.normalized;
+        //    robots.Add(Instantiate(robot, gameObject.transform.position+new Vector3(place.x,place.y,0)*5, Quaternion.identity));
+        //}
         
 
 

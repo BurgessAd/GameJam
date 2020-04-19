@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5010086257028811824}
   - component: {fileID: 1860016523453393559}
-  - component: {fileID: 2487411649866789531}
-  - component: {fileID: 7055469100221783611}
   - component: {fileID: 8282788807132450502}
+  - component: {fileID: -7530978087914958423}
+  - component: {fileID: -2361747712233329018}
   m_Layer: 0
   m_Name: Car
   m_TagString: Untagged
@@ -85,32 +85,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2487411649866789531
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2592051579901166637}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 366799b7cff40434e9c8bdf42facd40b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  StartingHP: 100
---- !u!114 &7055469100221783611
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2592051579901166637}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 209d595860682d349ac959442160cf77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthBarImagePrefab: {fileID: 4631029754687388047, guid: 4b014614d2eca4e43be749a3af871c6a, type: 3}
 --- !u!61 &8282788807132450502
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -137,3 +111,29 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9895737, y: 0.38766193}
   m_EdgeRadius: 0
+--- !u!114 &-7530978087914958423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2592051579901166637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3f4e0169f2a73945b3f227463fcfeee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartingHP: 100
+--- !u!114 &-2361747712233329018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2592051579901166637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d29c072119d51646b24af130c3c7d04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarImagePrefab: {fileID: 4631029754687388047, guid: 4b014614d2eca4e43be749a3af871c6a, type: 3}

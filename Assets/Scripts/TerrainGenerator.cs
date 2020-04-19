@@ -9,7 +9,7 @@ public class TerrainGenerator : MonoBehaviour
 	public List<Sprite> tileSprites = new List<Sprite>();
 	public int baseThreshold = 300;
 	public int sandThreshold=50;
-	public GameObject player;
+	public static GameObject player;
 	public int grassThreshold=50;
 	public int mountainThreshold=30;
 	public int mountainUpLim = 40;
@@ -47,13 +47,10 @@ public class TerrainGenerator : MonoBehaviour
 	void placePlayer()
     {
 		int rNum = (int)Random.Range(0, Reactor.reactors.Count-1);
-		
-		Reactor.reactors[rNum].GetComponent<Reactor>().isPlayer = true;
-		Vector3 start = Reactor.reactors[rNum].transform.position;
-		Vector3 place = Random.onUnitSphere;
-		Vector2 pos = (Vector2)place;
-		pos = pos.normalized;
-		player.transform.position = start + new Vector3(pos.x,pos.y,0) * 5;
+		GameObject playerReactor = Reactor.reactors[rNum];
+		playerReactor.AddComponent<PlayerInputComponent>();
+		playerReactor.GetComponent<ReactorComponent>().SetIsPlayer();
+		player = playerReactor.GetComponent<ReactorComponent>().SpawnPlayerBot();
 		
 
 	}

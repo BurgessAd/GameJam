@@ -9,6 +9,16 @@ public class ReactorComponent : MonoBehaviour
     private SharedProperties turretRotateSpeed;
     private SharedProperties acceleration;
     private SharedProperties treadsRotationSpeed;
+
+    public GameObject powerBar;
+    public GameObject moderatorBar;
+    public float maxPower = 100;
+    public float maxModerator = 100;
+    public float maxHealth = 100;
+
+
+    private List<GameObject> robots = new List<GameObject>();
+
     [SerializeField]
     int numBotsToSpawn = 1;
 
@@ -30,8 +40,12 @@ public class ReactorComponent : MonoBehaviour
     [SerializeField]
     [Range(1f, 4f)]
     private float MaxTreadsRotationSpeed = 3.0f;
-
+    [SerializeField]
     bool changedValues;
+
+
+    public bool isPlayer = false;
+
 
     void Awake()
     {
@@ -43,11 +57,27 @@ public class ReactorComponent : MonoBehaviour
         changedValues = true;
         OnValidate();
         Debug.Log("!");
+        powerBar.transform.localScale = Vector3.zero;
+        moderatorBar.transform.localScale = Vector3.zero;
+
         for (int i = 0; i < numBotsToSpawn; i++)
         {
             SpawnBot();
         }
     }
+
+
+    public void SetIsPlayer()
+    {
+
+        isPlayer = true;
+        powerBar.GetComponent<SpriteRenderer>().color = Color.cyan;
+        powerBar.transform.RotateAround(gameObject.transform.position, new Vector3(0, 0, 1), -gameObject.transform.eulerAngles.z);
+        moderatorBar.transform.RotateAround(gameObject.transform.position, new Vector3(0, 0, 1), -gameObject.transform.eulerAngles.z);
+        powerBar.transform.localScale = new Vector3(1,0.25f,1);
+        moderatorBar.transform.localScale = new Vector3(1, 0.25f, 1);
+    }
+
 
     private void OnValidate()
     {
@@ -62,12 +92,35 @@ public class ReactorComponent : MonoBehaviour
         }
         
     }
+
     public void SpawnBot()
     {
-        Debug.Log("!!!");
-        GameObject newBot = Instantiate(botPrefab);
+        Vector2 place = Random.insideUnitCircle;
+        place = place.normalized;
+        GameObject newBot = Instantiate(botPrefab, gameObject.transform.position + new Vector3(place.x, place.y, 0) * 5, Quaternion.identity);
+        newBot.GetComponent<PowerComponent>().SetComponentSharedProperties(turretRotateSpeed, attackDelay, movementSpeed, acceleration, treadsRotationSpeed);
+        newBot.SetActive(true);
+        robots.Add(newBot);
+    }
+
+
+    public GameObject SpawnPlayerBot()
+    {
+        Vector2 place = Random.insideUnitCircle;
+        place = place.normalized;
+        GameObject newBot = Instantiate(botPrefab, gameObject.transform.position + new Vector3(place.x, place.y, 0) * 5, Quaternion.identity);
         newBot.GetComponent<PowerComponent>().SetComponentSharedProperties(turretRotateSpeed, attackDelay, movementSpeed, acceleration, treadsRotationSpeed);
         newBot.GetComponent<MoveAuthorityComponent>().SetAuthority(GetComponent<PlayerInputComponent>());
         newBot.SetActive(true);
+        robots.Add(newBot);
+        return newBot;
+    }
+
+    void OnDestroy()
+    {
+        for (int i = 0; i < robots.Count; i++)
+        {
+            Destroy(robots[i]);
+        }
     }
 }
