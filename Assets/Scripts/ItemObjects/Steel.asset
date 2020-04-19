@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a83253a335693240988aa72203fb49c, type: 3}
   m_Name: Steel
   m_EditorClassIdentifier: 
-  objectImage: {fileID: 0}
-  UIImage: {fileID: 0}
+  objectImage: {fileID: 21300000, guid: 46603669fa82db34086c1c178819179e, type: 3}
+  UIImage: {fileID: 21300000, guid: 46603669fa82db34086c1c178819179e, type: 3}

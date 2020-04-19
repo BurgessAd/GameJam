@@ -28,7 +28,6 @@ public class AimComponent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         currentLookDirection = transform.up;
         float angleBetween = Vector3.Angle(currentLookDirection, desiredLookDirection);
         int sign = -(int)Mathf.Sign(Vector3.Dot(transform.right, desiredLookDirection));

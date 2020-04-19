@@ -12,13 +12,12 @@ public class BulletComponent : MonoBehaviour
     float bulletSurviveTime = 1.0f;
     float time;
     float currentBulletTime = 0.0f;
-    private GameObject shooter;
+
+    [SerializeField]
     private Transform bulletTransform;
-    void Awake()
-    {
-        time = Time.time;
-        bulletTransform = GetComponent<Transform>();
-    }
+    [SerializeField]
+    private GameObject hitAnimator;
+
 
     void Update()
     {
@@ -30,18 +29,16 @@ public class BulletComponent : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(Time.time - time>0.02f)
-        {
-            Debug.Log(collision.gameObject.name);
-            Destroy(gameObject);
-            if (collision.GetComponent<HealthComponent>())
-            {
-                collision.GetComponent<HealthComponent>().ProcessHit(bulletDamage);
-            }
-        }
 
-        
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+
+        if (collision.collider.GetComponent<HealthComponent>())
+        {
+            collision.collider.GetComponent<HealthComponent>().ProcessHit(bulletDamage);
+        }
+        Instantiate(hitAnimator, bulletTransform.position, bulletTransform.rotation);
+        Destroy(gameObject);
+
     }
 }

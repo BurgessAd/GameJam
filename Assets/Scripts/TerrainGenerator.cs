@@ -22,6 +22,7 @@ public class TerrainGenerator : MonoBehaviour
 	public GameObject reactor;
 	public GameObject ore;
 	public GameObject car;
+	public GameObject zombie;
 
 	// Start is called before the first frame update
 	void Start()
@@ -148,6 +149,8 @@ public class TerrainGenerator : MonoBehaviour
     {
 		if(data>=baseThreshold + sandThreshold && data <= baseThreshold + sandThreshold+mountainThreshold)
         {
+			
+
 			return tiles[Type.Sand];
         }
 		else if (data > baseThreshold + sandThreshold+ mountainThreshold && data < baseThreshold + sandThreshold + mountainThreshold+grassThreshold)
@@ -194,6 +197,10 @@ public class TerrainGenerator : MonoBehaviour
 				
 				entities.Add(Instantiate(car, new Vector3(tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)).x, tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)).y, 0), Quaternion.Euler(0,0,Random.Range(0,360))));
             }
+			if (Random.value > 0.999f)
+			{
+				entities.Add(Instantiate(zombie, new Vector3(tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)).x, tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)).y, 0), Quaternion.identity));
+			}
 			return tiles[Type.Grass];
         }
 		

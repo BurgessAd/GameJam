@@ -53,11 +53,7 @@ public class HealthBarComponent : MonoBehaviour
     }
     void HealthChanged(float newHealthPercentage)
     {
-        Debug.Log(newHealthPercentage);
-        Debug.Log(scale * newHealthPercentage);
         healthBarImage.transform.localScale = new Vector3(newHealthPercentage * baseScale, healthBarImage.transform.localScale.y, healthBarImage.transform.localScale.z);
-
-       
     }
     void LateUpdate()
     {

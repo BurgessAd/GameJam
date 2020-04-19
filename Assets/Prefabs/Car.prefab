@@ -13,7 +13,9 @@ GameObject:
   - component: {fileID: 8282788807132450502}
   - component: {fileID: -7530978087914958423}
   - component: {fileID: -2361747712233329018}
-  m_Layer: 0
+  - component: {fileID: -6223866048397178187}
+  - component: {fileID: 4392804163932754168}
+  m_Layer: 8
   m_Name: Car
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 2592051579901166637}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.8017027, y: 1.4999576, z: -97.75058}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.25, y: 1.25, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -137,3 +139,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBarImagePrefab: {fileID: 4631029754687388047, guid: 4b014614d2eca4e43be749a3af871c6a, type: 3}
+--- !u!114 &-6223866048397178187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2592051579901166637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a27f7ccb7dc7cd2438b0fc23ada4eccf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemObjRef: {fileID: 5712508820150017510, guid: a9dd093ed1c96f2498dce09475cc7ae5, type: 3}
+  Container:
+  - item: {fileID: 11400000, guid: 206dadda68b14424494802e63193e54d, type: 2}
+    currentAmount: 5
+--- !u!114 &4392804163932754168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2592051579901166637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7d3018032d55454c9e65fd8ba0c1ca6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionObjectPrefab: {fileID: 3993700912952185408, guid: 4909265de3aed3c46866a82f7dddf544, type: 3}
+  numInitialExplosion: 4
+  finalExplosionSize: 1
+  startExplosionSize: 0.5
+  timeAlive: 1

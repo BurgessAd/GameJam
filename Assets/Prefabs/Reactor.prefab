@@ -174,12 +174,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1786107847379513479}
   - component: {fileID: 1786107847379513476}
-  - component: {fileID: 1786107847379513478}
   - component: {fileID: 2126312756092576937}
   - component: {fileID: 8774064342909292394}
   - component: {fileID: -919396512931254149}
   - component: {fileID: -1400454514270160255}
   - component: {fileID: 8380815977893847214}
+  - component: {fileID: -6413043491777684103}
+  - component: {fileID: -6569951666927963352}
   m_Layer: 0
   m_Name: Reactor
   m_TagString: Untagged
@@ -196,7 +197,7 @@ Transform:
   m_GameObject: {fileID: 1786107847379513477}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 1}
   m_Children:
   - {fileID: 1786107846983755427}
   - {fileID: 1786107846359041291}
@@ -256,30 +257,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1786107847379513478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1786107847379513477}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02253f92ecb12274fb982403d58e9608, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  power: 100
-  health: 100
-  moderator: 100
-  robots: []
-  robot: {fileID: 7630637095788608577, guid: 0dd5eac2130bb2e4581407204a2ccfd7, type: 3}
-  powerBar: {fileID: 1786107846983755424}
-  moderatorBar: {fileID: 1786107846359041289}
-  maxPower: 100
-  maxModerator: 100
-  maxHealth: 100
-  numRobots: 4
-  isPlayer: 0
 --- !u!61 &2126312756092576937
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -323,10 +300,15 @@ MonoBehaviour:
   maxPower: 100
   maxModerator: 100
   maxHealth: 100
+  power: 100
+  moderator: 100
+  carbon: {fileID: 11400000, guid: 3525d22f5f6e23f478048c9b870426bc, type: 2}
+  uranium: {fileID: 11400000, guid: 450fb59f30ead194196f09d2bf60150a, type: 2}
   spinner: {fileID: 3963960496293619299}
   spinningRods: {fileID: 7667882507646320948}
-  numBotsToSpawn: 1
-  botPrefab: {fileID: 7630637095788608577, guid: 0dd5eac2130bb2e4581407204a2ccfd7, type: 3}
+  baseScale: 0
+  numBotsToSpawn: 5
+  botPrefab: {fileID: 7630637095788608577, guid: 0e20595e2f5230949b521fbb8ec06541, type: 3}
   MaxAttackDelay: 1
   MaxMovementSpeed: 3
   MaxTurretRotate: 3
@@ -334,6 +316,7 @@ MonoBehaviour:
   MaxTreadsRotationSpeed: 3
   changedValues: 0
   isPlayer: 0
+  spawnPlayer: 0
 --- !u!114 &-919396512931254149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381,6 +364,39 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!114 &-6413043491777684103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786107847379513477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7d3018032d55454c9e65fd8ba0c1ca6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionObjectPrefab: {fileID: 3993700912952185408, guid: 4909265de3aed3c46866a82f7dddf544, type: 3}
+  numInitialExplosion: 5
+  finalExplosionSize: 5
+  startExplosionSize: 2
+  timeAlive: 2
+--- !u!114 &-6569951666927963352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786107847379513477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a27f7ccb7dc7cd2438b0fc23ada4eccf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemObjRef: {fileID: 5712508820150017510, guid: a9dd093ed1c96f2498dce09475cc7ae5, type: 3}
+  Container:
+  - item: {fileID: 11400000, guid: 450fb59f30ead194196f09d2bf60150a, type: 2}
+    currentAmount: 10
 --- !u!1 &3963960496293619299
 GameObject:
   m_ObjectHideFlags: 0

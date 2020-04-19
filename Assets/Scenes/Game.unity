@@ -176,7 +176,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 3
+  orthographic size: 8.97
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -357,6 +357,7 @@ MonoBehaviour:
   reactor: {fileID: 1786107847379513477, guid: f9e8cc5540fadde4fbe0830a4d6223bb, type: 3}
   ore: {fileID: 2995490757547296924, guid: 6e8fb2b2a96861c4aa879e9b2c12095c, type: 3}
   car: {fileID: 2592051579901166637, guid: f9f55a04ed2b79b439c55d00e9574dd0, type: 3}
+  zombie: {fileID: 5617372841323181910, guid: 95986c59b32f62b458dec5b2d776ff62, type: 3}
   tilemap: {fileID: 1136387289}
 --- !u!19719996 &1136387291
 TilemapCollider2D:

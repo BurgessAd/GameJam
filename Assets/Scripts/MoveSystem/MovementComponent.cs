@@ -28,7 +28,14 @@ public class MovementComponent : MonoBehaviour
 
     private void Awake()
     {
-        lowerAnimator = GetComponentInChildren<LowerAnimator>();
+        if (GetComponentInChildren<LowerAnimator>() != null) {
+            lowerAnimator = GetComponentInChildren<LowerAnimator>();
+        }
+        else
+        {
+            lowerAnimator = gameObject.GetComponent<LowerAnimator>();
+        }
+        
         body = GetComponent<Rigidbody2D>();
         Cursor.visible = false;
     }
@@ -46,7 +53,6 @@ public class MovementComponent : MonoBehaviour
     public void SetDesiredSpeed(Vector2 newDesiredSpeed)
     {
         desiredMoveSpeed = newDesiredSpeed;
-
         if (desiredMoveSpeed.magnitude > 1.0f)
         {
             desiredMoveSpeed.Normalize();
@@ -57,7 +63,6 @@ public class MovementComponent : MonoBehaviour
     {
         currentMoveSpeed.x = Mathf.Clamp(currentMoveSpeed.x + Mathf.Sign(desiredMoveSpeed.x - currentMoveSpeed.x) * Mathf.Clamp(Mathf.Abs(desiredMoveSpeed.x - currentMoveSpeed.x), 0, acceleration.Value), -1.0f, 1.0f);
         currentMoveSpeed.y = Mathf.Clamp(currentMoveSpeed.y + Mathf.Sign(desiredMoveSpeed.y - currentMoveSpeed.y) * Mathf.Clamp(Mathf.Abs(desiredMoveSpeed.y - currentMoveSpeed.y), 0, acceleration.Value), -1.0f, 1.0f);
-
         body.velocity = new Vector2(currentMoveSpeed.x * movementSpeed.Value, currentMoveSpeed.y * movementSpeed.Value);
     }
 }

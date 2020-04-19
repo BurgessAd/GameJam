@@ -7,6 +7,9 @@ using System;
 // and drops them all on death if it receives a health component callback
 public class InventoryComponent : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject itemObjRef;
+
     void Awake()
     {
         if (GetComponent<HealthComponent>())
@@ -16,11 +19,17 @@ public class InventoryComponent : MonoBehaviour
     }
     private void EmptyInventoryOntoFloor()
     {
+
+        
         for (int i = 0; i < Container.Count; i++)
         {
-            GameObject newItem = new GameObject();
-            Transform thisTransform = newItem.transform;
-            ItemObjectPickable pickableObject = newItem.AddComponent<ItemObjectPickable>();
+            
+            GameObject newItem = Instantiate(itemObjRef);
+            
+            newItem.transform.localScale = Vector3Int.one * 3;
+            Transform thisTransform = newItem.GetComponent<Transform>();
+            ItemObjectPickable pickableObject = newItem.GetComponent<ItemObjectPickable>();
+
             pickableObject.SetItemObject(Container[i].item, Container[i].currentAmount);
             thisTransform.position = gameObject.transform.position;
         }
@@ -45,9 +54,11 @@ public class InventoryComponent : MonoBehaviour
             Container.Add(new InventorySlot(_item, _amount));
         }
     }
+
+
 }
 
-
+[Serializable]
 public class InventorySlot
 {
     public ItemObject item;
@@ -60,12 +71,13 @@ public class InventorySlot
     public void AddAmount(in int value)
     {
         currentAmount += value;
-        OnItemSlotAmountChanged(currentAmount);
+        
+        OnItemSlotAmountChanged?.Invoke(currentAmount);
     }
     public void EmptySlot()
     {
         currentAmount = 0;
-        OnItemSlotAmountChanged(currentAmount);
+        OnItemSlotAmountChanged?.Invoke(currentAmount);
     }
 
     public event Action<int> OnItemSlotAmountChanged;

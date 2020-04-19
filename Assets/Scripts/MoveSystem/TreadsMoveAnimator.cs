@@ -11,6 +11,10 @@ public class TreadsMoveAnimator : LowerAnimator
         treadsAnimator = GetComponent<Animator>();
         treadsAim = GetComponent<AimComponent>();
     }
+
+
+
+
     public override void SetAnimationState(in Vector2 velocity)
     {
         treadsAnimator.SetFloat("RunSpeed", velocity.magnitude);

@@ -11,7 +11,7 @@ public class RobotInputComponent : InputComponent
     public bool stayStill = false;
 
 
-    public ItemObject uranium;
+    //public ItemObject uranium;
     public ReactorComponent ownerReactor;
 
 
@@ -37,7 +37,7 @@ public class RobotInputComponent : InputComponent
     {
 
 
-        gameObject.GetComponent<InventoryComponent>().AddItem(uranium, 2);
+        //gameObject.GetComponent<InventoryComponent>().AddItem(uranium, 2);
         
         gameObject.GetComponent<HealthComponent>().OnObjectDied += Die;
 
@@ -50,6 +50,7 @@ public class RobotInputComponent : InputComponent
 
     public void Die()
     {
+        Destroy(gameObject.GetComponent<BoxCollider2D>());
         ownerReactor.killMe(gameObject);
     }
 

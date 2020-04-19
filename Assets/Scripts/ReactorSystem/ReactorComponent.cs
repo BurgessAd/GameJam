@@ -17,12 +17,15 @@ public class ReactorComponent : MonoBehaviour
     public float maxHealth = 100;
     public float power = 100;
     public float moderator = 100;
-    
+
+    public ItemObject carbon;
+    public ItemObject uranium;
+
 
     public GameObject spinner;
     public GameObject spinningRods;
 
-
+    public float baseScale;
 
     private List<GameObject> robots = new List<GameObject>();
 
@@ -53,6 +56,9 @@ public class ReactorComponent : MonoBehaviour
 
     public bool isPlayer = false;
 
+    [SerializeField]
+    bool spawnPlayer;
+
 
     void Awake()
     {
@@ -63,7 +69,7 @@ public class ReactorComponent : MonoBehaviour
         treadsRotationSpeed = ScriptableObject.CreateInstance<SharedProperties>() as SharedProperties;
         changedValues = true;
         OnValidate();
-        
+        baseScale = powerBar.transform.localScale.x;
         powerBar.transform.localScale = Vector3.zero;
         moderatorBar.transform.localScale = Vector3.zero;
 
@@ -85,7 +91,7 @@ public class ReactorComponent : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.Space)&&(TerrainGenerator.player.transform.position-gameObject.transform.position).magnitude< 7)
             {
-
+                replenishResources();
             }
             
 
@@ -93,14 +99,57 @@ public class ReactorComponent : MonoBehaviour
 
 
             depleteResources();
-            powerBar.transform.localScale = new Vector3(powerBar.transform.localScale.x * power / maxPower, powerBar.transform.localScale.y, powerBar.transform.localScale.z);
-            moderatorBar.transform.localScale = new Vector3(moderatorBar.transform.localScale.x * moderator / maxModerator, moderatorBar.transform.localScale.y, moderatorBar.transform.localScale.z);
-            if (robots.Count == 0)
+            powerBar.transform.localScale = new Vector3( baseScale*power / maxPower, powerBar.transform.localScale.y, powerBar.transform.localScale.z);
+            moderatorBar.transform.localScale = new Vector3( baseScale*moderator / maxModerator, moderatorBar.transform.localScale.y, moderatorBar.transform.localScale.z);
+            if (robots.Count == 0||power<=0||moderator<=0)
             {
                 GameOver();
             }
         }
     }
+
+    public void replenishResources()
+    {
+        int uraniumCount = 0;
+        int carbonCount = 0;
+        InventoryComponent inventory = TerrainGenerator.player.GetComponent<InventoryComponent>();
+        for (int i = 0; i <inventory.Container.Count;i++)
+        {
+            if (inventory.Container[i].item == uranium)
+            {
+                uraniumCount = inventory.Container[i].currentAmount;
+            }
+            else if(inventory.Container[i].item == carbon)
+            {
+                carbonCount = inventory.Container[i].currentAmount;
+            }
+        }
+        
+
+        if(power + 10*uraniumCount <= maxPower)
+        {
+            inventory.AddItem(uranium,-uraniumCount);
+            power += 10*uraniumCount;
+            Debug.Log($"replenshed {uraniumCount}");
+        }
+        else
+        {
+            inventory.AddItem(uranium,-(int)(maxPower - power)/10);
+            power = maxPower;
+        }
+        if (moderator + 10*carbonCount < maxModerator)
+        {
+            inventory.AddItem(carbon, -carbonCount);
+            moderator += 10*carbonCount;
+        }
+        else
+        {
+            inventory.AddItem(carbon, -(int)(maxModerator- moderator)/10);
+            moderator= maxModerator;
+        }
+        
+    }
+
 
     public void killMe(GameObject _robot)
     {
@@ -113,21 +162,22 @@ public class ReactorComponent : MonoBehaviour
             int index = (int)Random.Range(0, robots.Count - 1);
             robots[index].GetComponent<MoveAuthorityComponent>().SetAuthority(GetComponent<PlayerInputComponent>());
             robots[index].GetComponent<CameraLookComponent>().ChangeCameraFocus(robots[index]);
+            GetComponent<PlayerInputComponent>().ChangeControlledObject(robots[index]);
             TerrainGenerator.player = robots[index]; 
         }
-        Destroy(_robot,2.0f);
+        Destroy(_robot,0.2f);
     }
 
 
 
     public void GameOver()
     {
-
+        Application.Quit();
     }
 
     void depleteResources()
     {
-        power -= 0.0001f;
+        power -= 0.01f;
         moderator -= power / 10000f;
         
     }
@@ -156,6 +206,12 @@ public class ReactorComponent : MonoBehaviour
             treadsRotationSpeed.Value = MaxTreadsRotationSpeed;
             changedValues = false;
         }
+        if (spawnPlayer)
+        {
+            SpawnPlayerBot();
+            spawnPlayer = false;
+        }
+        
         
     }
 
@@ -179,6 +235,9 @@ public class ReactorComponent : MonoBehaviour
         newBot.GetComponent<PowerComponent>().SetComponentSharedProperties(turretRotateSpeed, attackDelay, movementSpeed, acceleration, treadsRotationSpeed);
         newBot.GetComponent<MoveAuthorityComponent>().SetAuthority(GetComponent<PlayerInputComponent>());
         newBot.GetComponent<RobotInputComponent>().ownerReactor = this;
+
+        GetComponent<PlayerInputComponent>().ChangeControlledObject(newBot);
+
         newBot.SetActive(true);
         robots.Add(newBot);
         return newBot;
