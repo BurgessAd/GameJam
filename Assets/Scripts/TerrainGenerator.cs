@@ -137,7 +137,11 @@ public class TerrainGenerator : MonoBehaviour
                     {
 						tilemap.SetColliderType(new Vector3Int(i, j, 0), Tile.ColliderType.None);
                     }
-				}				
+				}
+                else
+                {
+					tilemap.SetColliderType(new Vector3Int(i, j, 0), Tile.ColliderType.None);
+				}
             }
         }
     }
@@ -161,14 +165,19 @@ public class TerrainGenerator : MonoBehaviour
         {
 			if ((int)data % robotBaseSporadicity == 0 && data - (int)data < 0.02)
 			{
-				tilemap.SetTile(new Vector3Int(x-1, y, 0), tiles[Type.Grass]);
-				tilemap.SetTile(new Vector3Int(x - 1, y-1, 0), tiles[Type.Grass]);
-				tilemap.SetTile(new Vector3Int(x - 1, y+1, 0), tiles[Type.Grass]);
-				tilemap.SetTile(new Vector3Int(x , y-1, 0), tiles[Type.Grass]);
-				tilemap.SetTile(new Vector3Int(x, y +1, 0), tiles[Type.Grass]);
-				tilemap.SetTile(new Vector3Int(x+1, y - 1, 0), tiles[Type.Grass]);
-				tilemap.SetTile(new Vector3Int(x+1, y , 0), tiles[Type.Grass]);
-				tilemap.SetTile(new Vector3Int(x, y +1, 0), tiles[Type.Grass]);
+				int numOfTilesToReplace = 1;
+				for(int i = x - numOfTilesToReplace; i <= x + numOfTilesToReplace; i++)
+                {
+					for(int j = y- numOfTilesToReplace; j <= y + numOfTilesToReplace; j++)
+                    {
+                        if (j != i)
+                        {
+							tilemap.SetTile(new Vector3Int(x - 1, y, 0), tiles[Type.Grass]);
+						}
+						
+					}
+                }
+			
 				
 				Reactor.reactors.Add(Instantiate(reactor, new Vector3(tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)).x, tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)).y, 0), Quaternion.Euler(0, 0, Random.Range(0, 360))));
 				return tiles[Type.Grass];

@@ -50,7 +50,7 @@ public class Reactor : MonoBehaviour
         power = 100;
         health = 100;
         moderator = 100;
-
+        
     }
 
     void Setup(int _numRobots, float _power, float _health, float _moderator)
