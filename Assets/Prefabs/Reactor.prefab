@@ -174,7 +174,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1786107847379513479}
   - component: {fileID: 1786107847379513476}
-  - component: {fileID: 1786107847379513478}
   - component: {fileID: 2126312756092576937}
   - component: {fileID: 8774064342909292394}
   - component: {fileID: -919396512931254149}
@@ -253,30 +252,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1786107847379513478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1786107847379513477}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02253f92ecb12274fb982403d58e9608, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  power: 100
-  health: 100
-  moderator: 100
-  robots: []
-  robot: {fileID: 7630637095788608577, guid: 0dd5eac2130bb2e4581407204a2ccfd7, type: 3}
-  powerBar: {fileID: 1786107846983755424}
-  moderatorBar: {fileID: 1786107846359041289}
-  maxPower: 100
-  maxModerator: 100
-  maxHealth: 100
-  numRobots: 4
-  isPlayer: 0
 --- !u!61 &2126312756092576937
 BoxCollider2D:
   m_ObjectHideFlags: 0

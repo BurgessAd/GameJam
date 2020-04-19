@@ -13,6 +13,7 @@ public class PlayerInputComponent : InputComponent
     public void ChangeControlledObject(GameObject newObject)
     {
         newObject.GetComponent<MoveAuthorityComponent>().SetAuthority(this);
+        targetTransformComponent = newObject.GetComponent<Transform>();
     }
 
     public override Vector2 GetLookDirection()

@@ -9,6 +9,7 @@ public class HealthComponent : MonoBehaviour
     [SerializeField]
     private float StartingHP;
     private float CurrentHP;
+    bool dead = false;
     private void Awake()
     {
         CurrentHP = StartingHP;
@@ -21,8 +22,9 @@ public class HealthComponent : MonoBehaviour
 
         OnCurrentHealthChanged?.Invoke(CurrentHP/StartingHP);
 
-        if (CurrentHP < 0)
+        if (CurrentHP < 0 && !dead)
         {
+            dead = true;
             OnObjectDied?.Invoke();
         }
     }

@@ -46,6 +46,9 @@ public class ReactorComponent : MonoBehaviour
 
     public bool isPlayer = false;
 
+    [SerializeField]
+    bool spawnPlayer;
+
 
     void Awake()
     {
@@ -90,6 +93,12 @@ public class ReactorComponent : MonoBehaviour
             treadsRotationSpeed.Value = MaxTreadsRotationSpeed;
             changedValues = false;
         }
+        if (spawnPlayer)
+        {
+            SpawnPlayerBot();
+            spawnPlayer = false;
+        }
+        
         
     }
 
@@ -110,7 +119,7 @@ public class ReactorComponent : MonoBehaviour
         place = place.normalized;
         GameObject newBot = Instantiate(botPrefab, gameObject.transform.position + new Vector3(place.x, place.y, 0) * 5, Quaternion.identity);
         newBot.GetComponent<PowerComponent>().SetComponentSharedProperties(turretRotateSpeed, attackDelay, movementSpeed, acceleration, treadsRotationSpeed);
-        newBot.GetComponent<MoveAuthorityComponent>().SetAuthority(GetComponent<PlayerInputComponent>());
+        GetComponent<PlayerInputComponent>().ChangeControlledObject(newBot);
         newBot.SetActive(true);
         robots.Add(newBot);
         return newBot;

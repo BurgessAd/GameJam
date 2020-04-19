@@ -13,11 +13,10 @@ public class BulletComponent : MonoBehaviour
 
     float currentBulletTime = 0.0f;
 
+    [SerializeField]
     private Transform bulletTransform;
-    void Awake()
-    {
-        bulletTransform = GetComponent<Transform>();
-    }
+    [SerializeField]
+    private GameObject hitAnimator;
 
     void Update()
     {
@@ -29,12 +28,14 @@ public class BulletComponent : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        Destroy(gameObject);
-        if (collision.GetComponent<HealthComponent>())
+        if (collision.collider.GetComponent<HealthComponent>())
         {
-            collision.GetComponent<HealthComponent>().ProcessHit(bulletDamage);
+            collision.collider.GetComponent<HealthComponent>().ProcessHit(bulletDamage);
         }
+        Instantiate(hitAnimator, bulletTransform.position, bulletTransform.rotation);
+        Destroy(gameObject);
     }
 }
