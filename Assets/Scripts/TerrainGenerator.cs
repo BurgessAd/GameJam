@@ -9,21 +9,24 @@ public class TerrainGenerator : MonoBehaviour
 	public List<Sprite> tileSprites = new List<Sprite>();
 	public int baseThreshold = 300;
 	public int sandThreshold=50;
-	
+	public GameObject player;
 	public int grassThreshold=50;
 	public int mountainThreshold=30;
 	public int mountainUpLim = 40;
 	public int mountainSporadicity=69;
 	public int robotBaseSporadicity = 100;
 	public int mountainSpread=7;
+	public List<GameObject> entities = new List<GameObject>();
 	[SerializeField]
 	bool change = false;
-	public GameObject reactor; 
-
+	public GameObject reactor;
+	public GameObject ore;
+	public GameObject car;
 
 	// Start is called before the first frame update
 	void Start()
     {
+
 		int counter = 0;
 		foreach (Type type in Type.GetValues(typeof(Type)))
         {
@@ -35,11 +38,26 @@ public class TerrainGenerator : MonoBehaviour
 
         }
 
-	
-		generateLevel();
-		populateTilemap();
 
+		regenerate();
+        
+	
     }
+
+
+	void placePlayer()
+    {
+		int rNum = (int)Random.Range(0, Reactor.reactors.Count-1);
+		
+		Reactor.reactors[rNum].GetComponent<Reactor>().isPlayer = true;
+		Vector3 start = Reactor.reactors[rNum].transform.position;
+		Vector3 place = Random.onUnitSphere;
+		Vector2 pos = (Vector2)place;
+		pos = pos.normalized;
+		player.transform.position = start + new Vector3(pos.x,pos.y,0) * 5;
+		
+
+	}
 
 
 	void regenerate()
@@ -52,7 +70,8 @@ public class TerrainGenerator : MonoBehaviour
 			generateLevel();
         }
 		populateTilemap();
-    }
+		placePlayer();
+	}
 
     // Update is called once per frame
     void Update()
@@ -103,13 +122,22 @@ public class TerrainGenerator : MonoBehaviour
 
 	public void populateTilemap()
     {
+		tilemap.ClearAllTiles();
 		for(int i = 0; i < DATA_SIZE; i++)
         {
 			for(int j = 0; j < DATA_SIZE; j++)
             {
-				double data = levelx[i, j];
 
-				tilemap.SetTile(new Vector3Int(i, j, 0),GetTileFromData(data,i,j));
+				double data = levelx[i, j];
+                if (tilemap.GetTile(new Vector3Int(i, j, 0)) == null)
+                {
+					Tile tile = GetTileFromData(data, i, j);
+					tilemap.SetTile(new Vector3Int(i, j, 0), tile);
+                    if (tile != tiles[Type.Mountain])
+                    {
+						tilemap.SetColliderType(new Vector3Int(i, j, 0), Tile.ColliderType.None);
+                    }
+				}				
             }
         }
     }
@@ -133,15 +161,34 @@ public class TerrainGenerator : MonoBehaviour
         {
 			if ((int)data % robotBaseSporadicity == 0 && data - (int)data < 0.02)
 			{
-				Reactor.reactors.Add(Instantiate(reactor, new Vector3(tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)).x, tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)).y, 0), Quaternion.identity));
-				return tiles[Type.Robot];
+				tilemap.SetTile(new Vector3Int(x-1, y, 0), tiles[Type.Grass]);
+				tilemap.SetTile(new Vector3Int(x - 1, y-1, 0), tiles[Type.Grass]);
+				tilemap.SetTile(new Vector3Int(x - 1, y+1, 0), tiles[Type.Grass]);
+				tilemap.SetTile(new Vector3Int(x , y-1, 0), tiles[Type.Grass]);
+				tilemap.SetTile(new Vector3Int(x, y +1, 0), tiles[Type.Grass]);
+				tilemap.SetTile(new Vector3Int(x+1, y - 1, 0), tiles[Type.Grass]);
+				tilemap.SetTile(new Vector3Int(x+1, y , 0), tiles[Type.Grass]);
+				tilemap.SetTile(new Vector3Int(x, y +1, 0), tiles[Type.Grass]);
+				
+				Reactor.reactors.Add(Instantiate(reactor, new Vector3(tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)).x, tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)).y, 0), Quaternion.Euler(0, 0, Random.Range(0, 360))));
+				return tiles[Type.Grass];
 				
 			}
 			else if((int)data % mountainSporadicity <= mountainSpread&& (int)data < baseThreshold + sandThreshold + mountainThreshold +mountainUpLim && data- (int)data <30f/mountainSporadicity)
             {
+                if (Random.value > 0.95)
+                {
+					entities.Add(Instantiate(ore, new Vector3(tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)).x, tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)).y, 0), Quaternion.Euler(0, 0, Random.Range(0, 360))));
+					return tiles[Type.Grass];
+				}
+				tilemap.SetColliderType(new Vector3Int(x, y, 0), Tile.ColliderType.Sprite);
 				return tiles[Type.Mountain];
 			}
-			
+			if (Random.value > 0.999)
+            {
+				
+				entities.Add(Instantiate(car, new Vector3(tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)).x, tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)).y, 0), Quaternion.Euler(0,0,Random.Range(0,360))));
+            }
 			return tiles[Type.Grass];
         }
 		
@@ -151,10 +198,20 @@ public class TerrainGenerator : MonoBehaviour
         }
     }
 
+	public void EntitiesClear()
+    {
+        for (int i = 0; i < entities.Count; i++)
+        {
+			Destroy(entities[i]);
+        }
+		entities.Clear();
+    }
 
-	public static void generateLevel()
+
+	public void generateLevel()
 	{
 		Reactor.ClearList();
+		EntitiesClear();
 		//for (int i = 0; i < Types.length; i++)
 		//{
 		//	tileSetImgs.put(Types[i], GameEntity.getImage("tileset/" + Types[i] + ".png"));

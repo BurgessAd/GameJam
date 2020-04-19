@@ -10,7 +10,7 @@ public class Reactor : MonoBehaviour
     public float moderator;
     public List<GameObject> robots;
     public GameObject robot;
-    public GameObject healthBar;
+    
     public GameObject powerBar;
     public GameObject moderatorBar;
     public float maxPower = 100;
@@ -25,10 +25,12 @@ public class Reactor : MonoBehaviour
     void Start()
     {
 
-        healthBar.GetComponent<SpriteRenderer>().color = Color.green;
+        
         if (isPlayer)
         {
             powerBar.GetComponent<SpriteRenderer>().color = Color.cyan;
+            powerBar.transform.RotateAround(gameObject.transform.position, new Vector3(0, 0, 1), -gameObject.transform.eulerAngles.z);
+            moderatorBar.transform.RotateAround(gameObject.transform.position, new Vector3(0, 0, 1), -gameObject.transform.eulerAngles.z);
         }
         else
         {
@@ -38,7 +40,9 @@ public class Reactor : MonoBehaviour
 
         for(int i = 0; i < numRobots; i++)
         {
-            robots.Add(Instantiate(robot, gameObject.transform.position + Random.onUnitSphere * 2, Quaternion.identity));
+            Vector2 place = Random.insideUnitCircle;
+            place = place.normalized;
+            robots.Add(Instantiate(robot, gameObject.transform.position+new Vector3(place.x,place.y,0)*5, Quaternion.identity));
         }
         
 
@@ -60,18 +64,32 @@ public class Reactor : MonoBehaviour
 
     public static void ClearList()
     {
+
         for (int i = 0; i < reactors.Count; i++)
         {
             Destroy(reactors[i]);
+            
+        }
+        reactors.Clear();
+    }
+
+
+    void OnDestroy()
+    {
+        for (int i = 0; i < robots.Count; i++)
+        {
+            Destroy(robots[i]);
         }
     }
+
+
 
 
     // Update is called once per frame
     void Update()
     {
         count++;
-        healthBar.transform.localScale = new Vector3(health / 100f, healthBar.transform.localScale.y, healthBar.transform.localScale.z);
+        
 
         if (isPlayer)
         {
