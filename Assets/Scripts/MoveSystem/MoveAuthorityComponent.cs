@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(RobotInputComponent))]
 public class MoveAuthorityComponent : MonoBehaviour
 {
     [SerializeField]
@@ -10,20 +11,18 @@ public class MoveAuthorityComponent : MonoBehaviour
     private MovementComponent moveDirection;
     [SerializeField]
     private ShooterComponent shootState;
-    [SerializeField]
-    private PlayerInputComponent controllingInput;
+    private InputComponent controllingInput;
 
-    public void SetAuthority(PlayerInputComponent component)
+    public void SetAuthority(InputComponent component)
     {
         controllingInput = component;
-        controllingInput = GetComponent<PlayerInputComponent>();
     }
 
     private void Update()
     {
         if (!controllingInput)
         {
-            controllingInput = GetComponent<PlayerInputComponent>();
+            controllingInput = GetComponent<RobotInputComponent>();
         }
         mouseLookDirection.SetDesiredLookDirection(controllingInput.GetLookDirection());
         moveDirection.SetDesiredSpeed(controllingInput.GetMoveDirection());

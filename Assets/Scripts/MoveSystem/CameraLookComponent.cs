@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// player-only class for having the camera follow the robot that we're currently controlling
 public class CameraLookComponent : MonoBehaviour
 {
     [SerializeField]

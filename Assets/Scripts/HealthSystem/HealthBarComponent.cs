@@ -29,6 +29,10 @@ public class HealthBarComponent : MonoBehaviour
         healthBarImage.transform.localScale *= scale;
         
         healthBarImage.transform.position += new Vector3(0,0.8f*scale, 0);
+
+        
+        GetComponentInParent<HealthComponent>().OnCurrentHealthChanged += HealthChanged;
+        
     }
     void HealthChanged(float newHealthPercentage)
     {

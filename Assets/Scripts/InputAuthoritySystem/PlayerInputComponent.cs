@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInputComponent : MonoBehaviour
+public class PlayerInputComponent : InputComponent
 {
     private Transform targetTransformComponent;
     void Awake()
@@ -10,22 +10,17 @@ public class PlayerInputComponent : MonoBehaviour
         targetTransformComponent = GetComponent<Transform>();  
     }
 
-    private void Start()
-    {
-        ChangeControlledObject(gameObject);
-    }
-
     public void ChangeControlledObject(GameObject newObject)
     {
         newObject.GetComponent<MoveAuthorityComponent>().SetAuthority(this);
     }
 
-    public Vector2 GetLookDirection()
+    public override Vector2 GetLookDirection()
     {
         return Camera.main.ScreenToWorldPoint(Input.mousePosition) - targetTransformComponent.position;
     }
 
-    public Vector2 GetMoveDirection()
+    public override Vector2 GetMoveDirection()
     {
         Vector2 desiredMovementSpeed = Vector2.zero;
         if (Input.GetKey(KeyCode.W))
@@ -47,8 +42,13 @@ public class PlayerInputComponent : MonoBehaviour
         return desiredMovementSpeed;
     }
 
-    public bool GetShootState()
+    public override bool GetShootState()
     {
         return Input.GetMouseButton(0);
+    }
+
+    public override bool GetPickUpState()
+    {
+        return Input.GetKey(KeyCode.Space);
     }
 }

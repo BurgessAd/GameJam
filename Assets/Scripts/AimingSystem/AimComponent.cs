@@ -8,9 +8,12 @@ public class AimComponent : MonoBehaviour
 
     private Vector2 desiredLookDirection;
     private Vector2 currentLookDirection;
-
-    [SerializeField]
     private SharedProperties lookSpeed;
+
+    public void SetLookSpeed(SharedProperties lookSpeed)
+    {
+        this.lookSpeed = lookSpeed;
+    }
 
     void Awake()
     {
