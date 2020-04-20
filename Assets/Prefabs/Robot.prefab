@@ -265,7 +265,6 @@ GameObject:
   - component: {fileID: 6698246854832112125}
   - component: {fileID: 6950134058221258844}
   - component: {fileID: 7364056079353808106}
-  - component: {fileID: -1639164182255789278}
   m_Layer: 11
   m_Name: Robot
   m_TagString: Untagged
@@ -607,22 +606,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entityType: 0
---- !u!58 &-1639164182255789278
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7630637095788608577}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 10
 --- !u!1001 &1398011526036244614
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -13,15 +13,9 @@ public class RobotInputComponent : InputComponent
     public Vector2 adjustDir;
     public GameObject target;
     public float readjustTimer=0;
-    //public ItemObject uranium;
     public ReactorComponent ownerReactor;
+    int count = 0;
 
-
-    public void getTarget()
-    {
-
-        
-    }
 
 
 
@@ -63,10 +57,7 @@ public class RobotInputComponent : InputComponent
 
     void Start()
     {
-
-        GetComponent<CircleCollider2D>().radius = visionDist;
-        //gameObject.GetComponent<InventoryComponent>().AddItem(uranium, 2);
-
+        
         gameObject.GetComponent<HealthComponent>().OnObjectDied += Die;
 
         
@@ -84,7 +75,22 @@ public class RobotInputComponent : InputComponent
 
     void FixedUpdate()
     {
-        getTarget();
+
+        count++;
+        if (count % 40 == 0)
+        {
+            if (target == null)
+            {
+                getTarget();
+            }
+            else if ((target.transform.position - gameObject.transform.position).magnitude > visionDist)
+            {
+                target = null;
+            }
+        }
+
+
+        
 
 
         if (readjust && Time.time - readjustTimer > 2)
@@ -118,6 +124,30 @@ public class RobotInputComponent : InputComponent
         }
     }
 
+    public void getTarget()
+    {
+        for (int i = 0; i < TerrainGenerator.entities.Count; i++)
+        {
+            GameObject go = TerrainGenerator.entities[i];
+            if (!(go.GetComponent<EntityTag>().entityType == EntityTag.EntityType.Robot && go.GetComponent<RobotInputComponent>().ownerReactor==ownerReactor))
+            {
+                if ((go.transform.position - gameObject.transform.position).magnitude <= visionDist)
+                {
+                    target = go;
+                    break;
+                }
+            }
+
+        }
+    }
+
+
+    void OnDestroy()
+    {
+        TerrainGenerator.entities.Remove(gameObject);
+    }
+
+
     private Vector2 getRandomDir()
     {
         return dir;
@@ -128,23 +158,6 @@ public class RobotInputComponent : InputComponent
         return false;
     }
 
-    public void OnTriggerStay2D(Collider2D c)
-    {
-        if (target==null && c.gameObject.GetComponent<EntityTag>() != null)
-        {
-
-            
-
-            if (c.gameObject.GetComponent<EntityTag>().entityType == EntityTag.EntityType.Robot && c.gameObject.GetComponent<RobotInputComponent>().ownerReactor != ownerReactor)
-            {
-                target = c.gameObject;
-            }
-            else if(c.gameObject.GetComponent<EntityTag>().entityType == EntityTag.EntityType.Zombie)
-            {
-                target = c.gameObject;
-            }
-        }
-    }
 
 
 

@@ -10,6 +10,7 @@ public class UIHandler : MonoBehaviour
     public Text reactorText;
     public ReactorComponent playerReactor;
     public Tilemap tilemap;
+
     // Start is called before the first frame update
     void Start()
     {

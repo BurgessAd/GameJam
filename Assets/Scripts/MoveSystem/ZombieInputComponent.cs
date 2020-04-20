@@ -19,6 +19,7 @@ public class ZombieInputComponent : InputComponent
     public GameObject target;
     public float readjustTimer = 0;
     public bool readjusting = false;
+    int count = 0;
     public override Vector2 GetLookDirection()
     {
         return getRandomDir();
@@ -39,19 +40,16 @@ public class ZombieInputComponent : InputComponent
     void Start()
     {
 
-        GetComponent<CircleCollider2D>().radius = visionDist;
+        
         attackTimer = Time.time;
-        SharedProperties speed = new SharedProperties();
+        SharedProperties speed = ScriptableObject.CreateInstance("SharedProperties") as SharedProperties;
         speed.Value = 10f;
-        SharedProperties acc = new SharedProperties();
+        SharedProperties acc = ScriptableObject.CreateInstance("SharedProperties") as SharedProperties;
         acc.Value = 1f;
         movementComponent.SetMovementSpeed(speed,acc);
-        SharedProperties rot = new SharedProperties();
+        SharedProperties rot = ScriptableObject.CreateInstance("SharedProperties") as SharedProperties;
         rot.Value = 6f;
         lookdir.SetLookSpeed(rot);
-
-        
-
         gameObject.GetComponent<HealthComponent>().OnObjectDied += Die;
 
 
@@ -69,6 +67,24 @@ public class ZombieInputComponent : InputComponent
 
     void FixedUpdate()
     {
+
+        count++;
+        if (count % 40 == 0)
+        {
+            if (target == null)
+            {
+                getTarget();
+            }
+            else if ((target.transform.position - gameObject.transform.position).magnitude > visionDist)
+            {
+                target = null;
+            }
+        }
+
+        
+        
+
+
 
         if (readjusting && Time.time - readjustTimer > 1)
         {
@@ -158,17 +174,27 @@ public class ZombieInputComponent : InputComponent
     }
 
     
-
-    public void OnTriggerStay2D(Collider2D c)
+    public void getTarget()
     {
-        if (target == null && c.gameObject.GetComponent<EntityTag>()!=null)
+        for (int i = 0; i < TerrainGenerator.entities.Count; i++)
         {
-            if (c.gameObject.GetComponent<EntityTag>().entityType == EntityTag.EntityType.Robot)
+            GameObject go = TerrainGenerator.entities[i];
+            if (go.GetComponent<EntityTag>().entityType == EntityTag.EntityType.Robot)
             {
-                target = c.gameObject;
+                if ((go.transform.position - gameObject.transform.position).magnitude <= visionDist)
+                {
+
+                    target = go;
+                    break;
+                }
             }
             
         }
+    }
+
+    void OnDestroy()
+    {
+        TerrainGenerator.entities.Remove(gameObject);
     }
 
 

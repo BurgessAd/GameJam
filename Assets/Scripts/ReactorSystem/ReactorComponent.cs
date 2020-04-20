@@ -104,7 +104,9 @@ public class ReactorComponent : MonoBehaviour
             moderatorBar.transform.localScale = new Vector3( baseScale*moderator / maxModerator, moderatorBar.transform.localScale.y, moderatorBar.transform.localScale.z);
             if (robots.Count == 0||power<=0||moderator<=0)
             {
-                GameOver();
+                GetComponent<HealthComponent>().Die();
+                StartCoroutine(GameOver());
+                
             }
         }
     }
@@ -166,9 +168,6 @@ public class ReactorComponent : MonoBehaviour
 
     public void killMe(GameObject _robot)
     {
-        
-
-
         robots.Remove(_robot);
         if (_robot == TerrainGenerator.player)
         {
@@ -184,9 +183,11 @@ public class ReactorComponent : MonoBehaviour
 
 
 
-    public void GameOver()
+    IEnumerator GameOver()
     {
-        Application.Quit();
+        yield return new WaitForSeconds(0.5f);
+        StartMenu.startMenu();
+
     }
 
     void depleteResources()
@@ -239,6 +240,7 @@ public class ReactorComponent : MonoBehaviour
         newBot.GetComponent<PowerComponent>().SetComponentSharedProperties(turretRotateSpeed, attackDelay, movementSpeed, acceleration, treadsRotationSpeed);
         newBot.SetActive(true);
         newBot.GetComponent<RobotInputComponent>().ownerReactor = this;
+        TerrainGenerator.entities.Add(newBot);
         robots.Add(newBot);
     }
 
@@ -253,7 +255,7 @@ public class ReactorComponent : MonoBehaviour
         newBot.GetComponent<RobotInputComponent>().ownerReactor = this;
         newBot.name = "player";
         GetComponent<PlayerInputComponent>().ChangeControlledObject(newBot);
-
+        TerrainGenerator.entities.Add(newBot);
         newBot.SetActive(true);
         robots.Add(newBot);
         return newBot;

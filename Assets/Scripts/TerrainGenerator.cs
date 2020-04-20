@@ -16,7 +16,7 @@ public class TerrainGenerator : MonoBehaviour
 	public int mountainSporadicity=69;
 	public int robotBaseSporadicity = 100;
 	public int mountainSpread=7;
-	public List<GameObject> entities = new List<GameObject>();
+	public static List<GameObject> entities = new List<GameObject>();
 	[SerializeField]
 	bool change = false;
 	public GameObject reactor;
@@ -24,6 +24,10 @@ public class TerrainGenerator : MonoBehaviour
 	public GameObject car;
 	public GameObject zombie;
 	public GameObject playerReactor;
+	public List<Sprite> mountainTileConfigurations = new List<Sprite>();
+
+
+
 	// Start is called before the first frame update
 	void Start()
     {
@@ -87,6 +91,101 @@ public class TerrainGenerator : MonoBehaviour
         }
     }
 
+	//public Sprite getImageFromBinary(int binary)
+ //   {
+ //       if (binary == 255)
+ //       {
+	//		return tiles[Type.Mountain];
+ //       }
+ //       if (binary == 251)
+ //       {
+	//		return mountainTileConfigurations[0];
+ //       }
+	//	if(binary  == 254)
+ //       {
+	//		return mountainTileConfigurations[1];
+ //       }
+ //       if (binary == 127)
+ //       {
+	//		return mountainTileConfigurations[2];
+ //       }
+ //       if (binary == 223)
+ //       {
+	//		return mountainTileConfigurations[3];
+	//	}
+	//	if(binary == 22||binary == 18)
+ //       {
+	//		return mountainTileConfigurations[4];
+ //       }
+	//	if (binary == 31 ||binary == 63||binary == 159 || binary == 191)
+ //       {
+	//		return mountainTileConfigurations[5];
+ //       }
+	//	if(binary ==  )
+
+
+	//	if(binary  == 64)
+ //       {
+	//		mountainTileConfigurations[28];
+ //       }
+	//	if (binary == 16)
+	//	{
+	//		mountainTileConfigurations[29];
+	//	}
+	//	if (binary == 2)
+	//	{
+	//		mountainTileConfigurations[21];
+	//	}
+ //       if (binary == 8)
+ //       {
+
+ //       }
+
+
+
+
+	//	return mountainTileConfigurations[12];
+ //   }
+
+	//public void niceMountainWalls()
+	//{
+		
+	//	Dictionary<Vector3Int, Sprite> toAdd = new Dictionary<Vector3Int, Sprite>();
+	//	List<Vector3Int> coords = new List<Vector3Int>();
+
+
+	//	for (int i = 0; i < DATA_SIZE; i++)
+	//	{
+	//		for (int j = 0; j < DATA_SIZE; j++)
+	//		{
+	//			if(tilemap.GetTile(new Vector3Int(i, j, 0)) == tiles[Type.Mountain])
+ //               {
+	//				int value = 0;
+
+	//				for(int x = - 1; x <=  1 && x+i< DATA_SIZE - 1 && x+i >= 0;x++)
+ //                   {
+	//					for(int y =- 1; y <=  1 && y+j < DATA_SIZE - 1 && y+j >= 0; y++)
+ //                       {
+ //                           if (x == 0 && y == 0)
+ //                           {
+	//							continue;
+ //                           }
+	//						if(tilemap.GetTile(new Vector3Int(x, y, 0) == tiles[Type.Mountain])){
+	//							value += 1<<((x + 1) + (y+1)*3);
+ //                           }
+ //                       }
+ //                   }
+	//				Vector3Int v = new Vector3Int(i, j, 0);
+	//				toAdd.Add(v, getImageFromBinary(value));
+	//				coords.Add(v);
+					
+	//			}
+				
+	//		}
+	//	}
+	//}
+
+
 
 	public void populateMap()
 	{
@@ -110,7 +209,7 @@ public class TerrainGenerator : MonoBehaviour
 					}
 					else if (Random.value > 0.999)
                     {
-						entities.Add(Instantiate(car, new Vector3(tilemap.GetCellCenterWorld(new Vector3Int(i, j, 0)).x, tilemap.GetCellCenterWorld(new Vector3Int(i, j, 0)).y, 0), Quaternion.Euler(0, 0, Random.Range(0, 360))));
+						Instantiate(car, new Vector3(tilemap.GetCellCenterWorld(new Vector3Int(i, j, 0)).x, tilemap.GetCellCenterWorld(new Vector3Int(i, j, 0)).y, 0), Quaternion.Euler(0, 0, Random.Range(0, 360)));
 					}
 					else if (Random.value > 0.9999)
                     {
@@ -135,7 +234,7 @@ public class TerrainGenerator : MonoBehaviour
 					}
 					else if (Random.value > 0.995)
 					{
-						entities.Add(Instantiate(ore, new Vector3(tilemap.GetCellCenterWorld(new Vector3Int(i, j, 0)).x, tilemap.GetCellCenterWorld(new Vector3Int(i, j, 0)).y, 0), Quaternion.Euler(0, 0, Random.Range(0, 360))));
+						Instantiate(ore, new Vector3(tilemap.GetCellCenterWorld(new Vector3Int(i, j, 0)).x, tilemap.GetCellCenterWorld(new Vector3Int(i, j, 0)).y, 0), Quaternion.Euler(0, 0, Random.Range(0, 360)));
 					}
 				}
 			}

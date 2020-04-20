@@ -38,12 +38,16 @@ public class ItemObjectPickable : MonoBehaviour
 
     public void OnTriggerStay2D(Collider2D other)
     {
-        
-        other.GetComponent<InventoryComponent>().AddItem(objectType, objectNum);
-        soundComponent.Play(audioSource);
-        spriteRenderer.enabled = false;
-        collider2D.enabled = false;
-        StartCoroutine(IIII());
-        
+        InventoryComponent inv = other.GetComponent<InventoryComponent>();
+        if (inv != null)
+        {
+            inv.AddItem(objectType, objectNum);
+            soundComponent.Play(audioSource);
+            spriteRenderer.enabled = false;
+            collider2D.enabled = false;
+            StartCoroutine(IIII());
+        }
+
+
     }
 }

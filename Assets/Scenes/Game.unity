@@ -359,6 +359,37 @@ MonoBehaviour:
   car: {fileID: 2592051579901166637, guid: f9f55a04ed2b79b439c55d00e9574dd0, type: 3}
   zombie: {fileID: 5794652123593603727, guid: 992ab0ec599bd214c813577e5248b3eb, type: 3}
   playerReactor: {fileID: 0}
+  mountainTileConfigurations:
+  - {fileID: 7433558493603237883, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: -7608789907712861298, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: 3855717520880757999, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: 3081647168715832868, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: 4891644481828302702, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: -5521975583607917332, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: 2006101729556367346, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: -6143392464884554388, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: 7313235269434679454, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: -249526044788324249, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: -3690416548270498112, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: -8336290531034326304, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: -7099648407951794506, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: 1818229509357894479, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: -3676578308613098002, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: 9104596853321559911, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: 143863337176873364, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: -6772764123831396984, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: 8531067219944940057, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: -5983237704300348938, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: 2088886550857146127, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: -7774693428285847501, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: 881690885417723625, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: -7057397438050260823, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: -2376246347515469099, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: 4725355647881502841, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: -4854113570832670814, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: 4330773250266049319, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: 7434428645266508650, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
+  - {fileID: -4260951574897931651, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
   tilemap: {fileID: 1136387289}
 --- !u!19719996 &1136387291
 TilemapCollider2D:

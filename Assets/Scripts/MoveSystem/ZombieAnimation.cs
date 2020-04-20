@@ -19,7 +19,7 @@ public class ZombieAnimation : LowerAnimator
     }
     public override void SetAnimationState(in Vector2 velocity)
     {
-        zombieAnimator.SetFloat("RunSpeed", velocity.magnitude);
+        //zombieAnimator.SetFloat("RunSpeed", velocity.magnitude);
         
     }
 }

@@ -37,7 +37,7 @@ public class MovementComponent : MonoBehaviour
         {
             lowerAnimator = gameObject.GetComponent<LowerAnimator>();
         }
-        SharedProperties s = new SharedProperties();
+        SharedProperties s = ScriptableObject.CreateInstance("SharedProperties") as SharedProperties;
         s.Value = 1;
         SetMovementSpeed(s,s);
 
