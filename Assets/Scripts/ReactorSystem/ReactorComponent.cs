@@ -162,6 +162,7 @@ public class ReactorComponent : MonoBehaviour
             int index = (int)Random.Range(0, robots.Count - 1);
             robots[index].GetComponent<MoveAuthorityComponent>().SetAuthority(GetComponent<PlayerInputComponent>());
             robots[index].GetComponent<CameraLookComponent>().ChangeCameraFocus(robots[index]);
+            robots[index].name == "player";
             GetComponent<PlayerInputComponent>().ChangeControlledObject(robots[index]);
             TerrainGenerator.player = robots[index]; 
         }
@@ -235,7 +236,7 @@ public class ReactorComponent : MonoBehaviour
         newBot.GetComponent<PowerComponent>().SetComponentSharedProperties(turretRotateSpeed, attackDelay, movementSpeed, acceleration, treadsRotationSpeed);
         newBot.GetComponent<MoveAuthorityComponent>().SetAuthority(GetComponent<PlayerInputComponent>());
         newBot.GetComponent<RobotInputComponent>().ownerReactor = this;
-
+        newBot.name = "player";
         GetComponent<PlayerInputComponent>().ChangeControlledObject(newBot);
 
         newBot.SetActive(true);

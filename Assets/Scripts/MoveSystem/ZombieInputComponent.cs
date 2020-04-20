@@ -12,7 +12,10 @@ public class ZombieInputComponent : InputComponent
     private float wait;
     private Vector2 dir;
     public float visionDist = 5;
-    
+    public Animator animator;
+    private float attackTimer;
+    private float attackDelay = 0.5f;
+
 
 
     public override Vector2 GetLookDirection()
@@ -27,6 +30,7 @@ public class ZombieInputComponent : InputComponent
 
     void Start()
     {
+        attackTimer = Time.time;
         SharedProperties speed = new SharedProperties();
         speed.Value = 10f;
         SharedProperties acc = new SharedProperties();
@@ -55,10 +59,21 @@ public class ZombieInputComponent : InputComponent
 
     void FixedUpdate()
     {
+
+
+        animator.SetFloat("Speed", dir.magnitude);
         if ((TerrainGenerator.player.transform.position - gameObject.transform.position).magnitude < visionDist)
         {
             
             dir = (Vector2)(TerrainGenerator.player.transform.position - gameObject.transform.position);
+            if((TerrainGenerator.player.transform.position - gameObject.transform.position).magnitude < 3)
+            {
+                animator.SetBool("Attacking", true);
+;            }
+            else
+            {
+                animator.SetBool("Attacking", false);
+            }
 
         }
 
@@ -82,6 +97,18 @@ public class ZombieInputComponent : InputComponent
         lookdir.SetDesiredLookDirection(-dir);
 
     }
+
+    public void OnCollisionStay2D(Collision2D c)
+    {
+        
+        if (c.gameObject.name == "player" &&Time.time-attackTimer>attackDelay)
+        {
+            Debug.Log("HIT");
+            attackTimer = Time.time;
+            c.gameObject.GetComponent<HealthComponent>().ProcessHit(5f);
+        }
+    }
+
 
     private Vector2 getRandomDir()
     {
