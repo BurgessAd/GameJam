@@ -7,6 +7,7 @@ public class TerrainGenerator : MonoBehaviour
 {
 
 	public List<Sprite> tileSprites = new List<Sprite>();
+	private List<Tile> tiles = new List<Tile>();
 	public int baseThreshold = 300;
 	public int sandThreshold=50;
 	public static GameObject player;
@@ -27,19 +28,12 @@ public class TerrainGenerator : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
     {
-
-		int counter = 0;
-		foreach (Type type in Type.GetValues(typeof(Type)))
+		for (int i = 0; i < tileSprites.Count; i++)
         {
-			
 			Tile tile = ScriptableObject.CreateInstance<Tile>();
-			tile.sprite = tileSprites[counter];
-			counter++;
-			tiles.Add(type, tile);
-
+			tile.sprite = tileSprites[i];
+			tiles.Add(tile);
         }
-
-
 		regenerate();	
 		//Robot.player = player;
     }
@@ -53,7 +47,6 @@ public class TerrainGenerator : MonoBehaviour
 		_playerReactor.GetComponent<ReactorComponent>().SetIsPlayer();
 		player = _playerReactor.GetComponent<ReactorComponent>().SpawnPlayerBot();
 		playerReactor = _playerReactor;
-
 	}
 
 
@@ -63,11 +56,11 @@ public class TerrainGenerator : MonoBehaviour
 		
 		generateLevel();
 		int avg = average();
-        while (avg < baseThreshold + sandThreshold + mountainThreshold+grassThreshold)
-        {
+        //while (avg < baseThreshold + sandThreshold + mountainThreshold+grassThreshold)
+        //{
 			generateLevel();
 			avg = average();
-        }
+        //}
 		populateTilemap();
 		populateMap();
 		placePlayer();
@@ -79,10 +72,10 @@ public class TerrainGenerator : MonoBehaviour
         if (change)
         {
 			change = false;
-			while (average() < baseThreshold + sandThreshold + mountainThreshold + grassThreshold&& Reactor.reactors.Count<5&& average()> baseThreshold + sandThreshold + mountainThreshold + 4*grassThreshold)
-			{
+			//while (average() < baseThreshold + sandThreshold + mountainThreshold + grassThreshold&& Reactor.reactors.Count<5&& average()> baseThreshold + sandThreshold + mountainThreshold + 4*grassThreshold)
+			//{
 				generateLevel();
-			}
+			//}
 			regenerate();
         }
     }
@@ -90,19 +83,18 @@ public class TerrainGenerator : MonoBehaviour
 
 	public void populateMap()
 	{
-		for (int i = 0; i < DATA_SIZE; i++)
+		for (int i = 0; i < DATA_SIZE-1; i++)
 		{
-			for (int j = 0; j < DATA_SIZE; j++)
+			for (int j = 0; j < DATA_SIZE-1; j++)
 			{
-				if(i==0 ||j==0 || j == DATA_SIZE - 1 || i == DATA_SIZE - 1)
+				if(i==0 ||j==0 || j == DATA_SIZE - 2 || i == DATA_SIZE - 2)
                 {
-					tilemap.SetTile(new Vector3Int(i, j, 0), tiles[Type.Mountain]);
+					tilemap.SetTile(new Vector3Int(i, j, 0), tiles[15]);
 					tilemap.SetColliderType(new Vector3Int(i, j, 0), Tile.ColliderType.Sprite);
-
 				}
 
 
-				if(tilemap.GetTile(new Vector3Int(i, j, 0)) == tiles[Type.Grass])
+				if(tilemap.GetTile(new Vector3Int(i, j, 0)) == tiles[0])
                 {
                     if (Random.value > 0.999)
                     {
@@ -115,15 +107,15 @@ public class TerrainGenerator : MonoBehaviour
 					else if (Random.value > 0.9999)
                     {
 						int numOfTilesToReplace = 3;
-						for (int k = i - numOfTilesToReplace; k <= i + numOfTilesToReplace && k < DATA_SIZE; k++)
+						for (int k = i - numOfTilesToReplace; k <= i + numOfTilesToReplace && k < DATA_SIZE-1; k++)
 						{
-							for (int l = j - numOfTilesToReplace; l <= j + numOfTilesToReplace && l < DATA_SIZE; l++)
+							for (int l = j - numOfTilesToReplace; l <= j + numOfTilesToReplace && l < DATA_SIZE-1; l++)
 							{
 								if (l != j || k != i)
 								{
                                     if (l >= 1 && k >= 1)
                                     {
-										tilemap.SetTile(new Vector3Int(k, l, 0), tiles[Type.Grass]);
+										tilemap.SetTile(new Vector3Int(k, l, 0), tiles[0]);
 										tilemap.SetColliderType(new Vector3Int(k, l, 0), Tile.ColliderType.None);
 									}
 
@@ -142,27 +134,26 @@ public class TerrainGenerator : MonoBehaviour
 		}
         while (Reactor.reactors.Count < 4)
         {
-			for (int i = 0; i < DATA_SIZE; i++)
+			for (int i = 0; i < DATA_SIZE-1; i++)
 			{
-				for (int j = 0; j < DATA_SIZE; j++)
+				for (int j = 0; j < DATA_SIZE-1; j++)
 				{
-					if (tilemap.GetTile(new Vector3Int(i, j, 0)) == tiles[Type.Grass])
+					if (tilemap.GetTile(new Vector3Int(i, j, 0)) == tiles[0])
 					{
 						if (Random.value > 0.9999)
 						{
 							int numOfTilesToReplace = 3;
-							for (int k = i - numOfTilesToReplace; k <= i + numOfTilesToReplace && k < DATA_SIZE; k++)
+							for (int k = i - numOfTilesToReplace; k <= i + numOfTilesToReplace && k < DATA_SIZE-1; k++)
 							{
-								for (int l = j - numOfTilesToReplace; l <= j + numOfTilesToReplace && l < DATA_SIZE; l++)
+								for (int l = j - numOfTilesToReplace; l <= j + numOfTilesToReplace && l < DATA_SIZE-1; l++)
 								{
 									if (l != j || k != i)
 									{
 										if (l >= 1 && k >= 1)
 										{
-											tilemap.SetTile(new Vector3Int(k, l, 0), tiles[Type.Grass]);
+											tilemap.SetTile(new Vector3Int(k, l, 0), tiles[0]);
 											tilemap.SetColliderType(new Vector3Int(k, l, 0), Tile.ColliderType.None);
 										}
-
 									}
 
 								}
@@ -179,7 +170,6 @@ public class TerrainGenerator : MonoBehaviour
 
 
 	public Tilemap tilemap;
-	public Dictionary<Type, Tile> tiles = new Dictionary<Type, Tile>();
 	static int DATA_SIZE = 257;
 	public static double[,] levelx = new double[DATA_SIZE,DATA_SIZE];
 
@@ -204,65 +194,67 @@ public class TerrainGenerator : MonoBehaviour
 	public void populateTilemap()
     {
 		tilemap.ClearAllTiles();
-		for(int i = 0; i < DATA_SIZE; i++)
+		for(int i = 0; i < DATA_SIZE-1; i++)
         {
-			for(int j = 0; j < DATA_SIZE; j++)
+			for(int j = 0; j < DATA_SIZE-1; j++)
             {
 
-				double data = levelx[i, j];
-                if (tilemap.GetTile(new Vector3Int(i, j, 0)) == null)
+				PointType data = GetPointTypeFromData(levelx[i, j]);
+				PointType datax = GetPointTypeFromData(levelx[i+1, j]);
+				PointType datay = GetPointTypeFromData(levelx[i, j+1]);
+				PointType dataxy = GetPointTypeFromData(levelx[i+1, j+1]);
+
+				Tile tile = GetTileFromData(data, datay, datax, dataxy);
+				tilemap.SetTile(new Vector3Int(i, j, 0), tile);
+                if (data.Equals(PointType.mountains) || datax.Equals(PointType.mountains) || datay.Equals(PointType.mountains) || dataxy.Equals(PointType.mountains))
                 {
-					Tile tile = GetTileFromData(data, i, j);
-					tilemap.SetTile(new Vector3Int(i, j, 0), tile);
-                    if (tile != tiles[Type.Mountain])
-                    {
-						tilemap.SetColliderType(new Vector3Int(i, j, 0), Tile.ColliderType.None);
-                    }
-				}
-                else
-                {
+					tilemap.SetColliderType(new Vector3Int(i, j, 0), Tile.ColliderType.Sprite);
+                }
+				else
+				{
 					tilemap.SetColliderType(new Vector3Int(i, j, 0), Tile.ColliderType.None);
 				}
             }
         }
     }
 
-
-
-	private Tile GetTileFromData(double data, int x, int y)
-    {
-		if(data>=baseThreshold + sandThreshold && data <= baseThreshold + sandThreshold+mountainThreshold)
-        {
-			
-
-			return tiles[Type.Sand];
-        }
-		else if (data > baseThreshold + sandThreshold+ mountainThreshold && data < baseThreshold + sandThreshold + mountainThreshold+grassThreshold)
+	private Tile GetTileFromData(PointType x0y0, PointType x0y1, PointType x1y0, PointType x1y1)
+	{
+		int bitFlag = 0;
+		if (x0y0.Equals(PointType.mountains))
 		{
-           
-			return tiles[Type.Mountain];
-			
-			
+			bitFlag |= (1 << 0);
 		}
-		else if(data> baseThreshold + sandThreshold + mountainThreshold + grassThreshold)
-        {
-			
-			if((int)data % mountainSporadicity <= mountainSpread&& (int)data < baseThreshold + sandThreshold + mountainThreshold +mountainUpLim && data- (int)data <30f/mountainSporadicity)
-            {
+		if (x0y1.Equals(PointType.mountains))
+		{
+			bitFlag |= (1 << 1);
+		}
+		if (x1y0.Equals(PointType.mountains))
+		{
+			bitFlag |= (1 << 2);
+		}
+		if (x1y1.Equals(PointType.mountains))
+		{
+			bitFlag |= (1 << 3);
+		}
+		return tiles[bitFlag];
+	}
+
+
+	private PointType GetPointTypeFromData(double data)
+    {
+
+		if (data < baseThreshold)
+		{
+			//if((int)data % mountainSporadicity <= mountainSpread && data- (int)data <30f/mountainSporadicity)
+   //         {
                 
-				tilemap.SetColliderType(new Vector3Int(x, y, 0), Tile.ColliderType.Sprite);
-				return tiles[Type.Mountain];
-			}
-			
-			
-			return tiles[Type.Grass];
+				//tilemap.SetColliderType(new Vector3Int(x, y, 0), Tile.ColliderType.Sprite);
+				return PointType.mountains;
+			//}	
         }
-		
-        else
-        {
-			return tiles[Type.Water];
-        }
-    }
+		return PointType.sand;
+	}
 
 	public void EntitiesClear()
     {
@@ -388,9 +380,9 @@ public class TerrainGenerator : MonoBehaviour
 		
 	
 	}
-	public enum Type
+	public enum PointType
 	{
-		Grass, Sand, Water, Mountain, Robot
+		mountains, sand
 	}
 
 }

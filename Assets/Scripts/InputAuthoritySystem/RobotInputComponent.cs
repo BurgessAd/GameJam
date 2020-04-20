@@ -64,7 +64,6 @@ public class RobotInputComponent : InputComponent
     void Start()
     {
 
-        GetComponent<CircleCollider2D>().radius = visionDist;
         //gameObject.GetComponent<InventoryComponent>().AddItem(uranium, 2);
 
         gameObject.GetComponent<HealthComponent>().OnObjectDied += Die;
@@ -128,8 +127,11 @@ public class RobotInputComponent : InputComponent
         return false;
     }
 
+    void ChooseTile(int tile) {}
+
     public void OnTriggerStay2D(Collider2D c)
     {
+
         if (target==null && c.gameObject.GetComponent<EntityTag>() != null)
         {
 

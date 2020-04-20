@@ -17,6 +17,8 @@ public class ReactorComponent : MonoBehaviour
     public float maxHealth = 100;
     public float power = 100;
     public float moderator = 100;
+    [Range(0, 1)]
+    public float spinSpeedModifier;
 
     public ItemObject carbon;
     public ItemObject uranium;
@@ -73,21 +75,22 @@ public class ReactorComponent : MonoBehaviour
         baseScale = powerBar.transform.localScale.x;
         powerBar.transform.localScale = Vector3.zero;
         moderatorBar.transform.localScale = Vector3.zero;
+    }
 
+    private void Start()
+    {
         for (int i = 0; i < numBotsToSpawn; i++)
         {
             SpawnBot();
         }
+        GetComponent<TeamComponent>().SetPlayer(isPlayer);
     }
 
 
     void Update()
     {
-
-
-
-        spinner.transform.Rotate(0, 0, power);
-        spinningRods.transform.Rotate(0, 0, -power);
+        spinner.transform.Rotate(0, 0, power * spinSpeedModifier);
+        spinningRods.transform.Rotate(0, 0, -power * spinSpeedModifier);
         if (isPlayer)
         {
             if (Input.GetKey(KeyCode.Space)&&(TerrainGenerator.player.transform.position-gameObject.transform.position).magnitude< 7)
@@ -95,10 +98,6 @@ public class ReactorComponent : MonoBehaviour
                 replenishResources();
             }
             
-
-
-
-
             depleteResources();
             powerBar.transform.localScale = new Vector3( baseScale*power / maxPower, powerBar.transform.localScale.y, powerBar.transform.localScale.z);
             moderatorBar.transform.localScale = new Vector3( baseScale*moderator / maxModerator, moderatorBar.transform.localScale.y, moderatorBar.transform.localScale.z);
@@ -174,7 +173,7 @@ public class ReactorComponent : MonoBehaviour
         {
             int index = (int)Random.Range(0, robots.Count - 1);
             robots[index].GetComponent<MoveAuthorityComponent>().SetAuthority(GetComponent<PlayerInputComponent>());
-            robots[index].GetComponent<CameraLookComponent>().ChangeCameraFocus(robots[index]);
+            robots[index].AddComponent<CameraLookComponent>().ChangeCameraFocus(robots[index]);
             robots[index].name = "player";
             GetComponent<PlayerInputComponent>().ChangeControlledObject(robots[index]);
             TerrainGenerator.player = robots[index]; 
@@ -231,7 +230,7 @@ public class ReactorComponent : MonoBehaviour
 
     
 
-    public void SpawnBot()
+    public GameObject SpawnBot()
     {
         Vector2 place = Random.insideUnitCircle;
         place = place.normalized;
@@ -240,22 +239,19 @@ public class ReactorComponent : MonoBehaviour
         newBot.SetActive(true);
         newBot.GetComponent<RobotInputComponent>().ownerReactor = this;
         robots.Add(newBot);
+        newBot.GetComponent<TeamComponent>().SetPlayer(isPlayer);
+        return newBot;
     }
 
 
     public GameObject SpawnPlayerBot()
     {
-        Vector2 place = Random.insideUnitCircle;
-        place = place.normalized;
-        GameObject newBot = Instantiate(botPrefab, gameObject.transform.position + new Vector3(place.x, place.y, 0) * 2, Quaternion.identity);
-        newBot.GetComponent<PowerComponent>().SetComponentSharedProperties(turretRotateSpeed, attackDelay, movementSpeed, acceleration, treadsRotationSpeed);
+        GameObject newBot = SpawnBot();
         newBot.GetComponent<MoveAuthorityComponent>().SetAuthority(GetComponent<PlayerInputComponent>());
-        newBot.GetComponent<RobotInputComponent>().ownerReactor = this;
         newBot.name = "player";
+        newBot.AddComponent<CameraLookComponent>();
         GetComponent<PlayerInputComponent>().ChangeControlledObject(newBot);
 
-        newBot.SetActive(true);
-        robots.Add(newBot);
         return newBot;
     }
 
