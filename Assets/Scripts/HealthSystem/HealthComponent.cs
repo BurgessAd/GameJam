@@ -22,13 +22,18 @@ public class HealthComponent : MonoBehaviour
 
         OnCurrentHealthChanged?.Invoke(CurrentHP/StartingHP);
 
-        if (CurrentHP < 0 && !dead)
+        if (CurrentHP <= 0 && !dead)
         {
             gameObject.layer = 14;
 
             dead = true;
             OnObjectDied?.Invoke();
         }
+    }
+
+    public void Die()
+    {
+        CurrentHP = -1f;
     }
 
     public event Action OnObjectDied;

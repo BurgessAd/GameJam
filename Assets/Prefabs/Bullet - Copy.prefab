@@ -73,11 +73,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletDamage: 10
-  bulletSpeed: 24.79
-  bulletSurviveTime: 16.22
+  bulletSpeed: 0.15
+  bulletSurviveTime: 6.41
   bulletTransform: {fileID: 4312441048046600377}
   hitAnimator: {fileID: 2522075774422320429, guid: 90036bfb48ed64648bc9ba8e4950a8de, type: 3}
-  bulletBody: {fileID: -417354439785114246}
 --- !u!96 &1833815060163447546
 TrailRenderer:
   serializedVersion: 2
@@ -118,7 +117,7 @@ TrailRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 4
+  m_SortingOrder: 0
   m_Time: 0.19
   m_Parameters:
     serializedVersion: 3

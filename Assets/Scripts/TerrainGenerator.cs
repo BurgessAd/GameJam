@@ -23,7 +23,7 @@ public class TerrainGenerator : MonoBehaviour
 	public GameObject ore;
 	public GameObject car;
 	public GameObject zombie;
-
+	public GameObject playerReactor;
 	// Start is called before the first frame update
 	void Start()
     {
@@ -48,11 +48,11 @@ public class TerrainGenerator : MonoBehaviour
 	void placePlayer()
     {
 		int rNum = (int)Random.Range(0, Reactor.reactors.Count-1);
-		GameObject playerReactor = Reactor.reactors[rNum];
-		playerReactor.AddComponent<PlayerInputComponent>();
-		playerReactor.GetComponent<ReactorComponent>().SetIsPlayer();
-		player = playerReactor.GetComponent<ReactorComponent>().SpawnPlayerBot();
-		
+		GameObject _playerReactor = Reactor.reactors[rNum];
+		_playerReactor.AddComponent<PlayerInputComponent>();
+		_playerReactor.GetComponent<ReactorComponent>().SetIsPlayer();
+		player = _playerReactor.GetComponent<ReactorComponent>().SpawnPlayerBot();
+		playerReactor = _playerReactor;
 
 	}
 
@@ -62,11 +62,14 @@ public class TerrainGenerator : MonoBehaviour
 		levelx = new double[DATA_SIZE, DATA_SIZE];
 		
 		generateLevel();
-        while (average() < baseThreshold + sandThreshold + mountainThreshold + grassThreshold)
+		int avg = average();
+        while (avg < baseThreshold + sandThreshold + mountainThreshold+grassThreshold)
         {
 			generateLevel();
+			avg = average();
         }
 		populateTilemap();
+		populateMap();
 		placePlayer();
 	}
 
@@ -76,9 +79,8 @@ public class TerrainGenerator : MonoBehaviour
         if (change)
         {
 			change = false;
-			while (average() < baseThreshold + sandThreshold + mountainThreshold + grassThreshold&& Reactor.reactors.Count<5)
+			while (average() < baseThreshold + sandThreshold + mountainThreshold + grassThreshold&& Reactor.reactors.Count<5&& average()> baseThreshold + sandThreshold + mountainThreshold + 4*grassThreshold)
 			{
-
 				generateLevel();
 			}
 			regenerate();
@@ -87,10 +89,92 @@ public class TerrainGenerator : MonoBehaviour
 
 
 	public void populateMap()
-    {
+	{
+		for (int i = 0; i < DATA_SIZE; i++)
+		{
+			for (int j = 0; j < DATA_SIZE; j++)
+			{
+				if(i==0 ||j==0 || j == DATA_SIZE - 1 || i == DATA_SIZE - 1)
+                {
+					tilemap.SetTile(new Vector3Int(i, j, 0), tiles[Type.Mountain]);
+					tilemap.SetColliderType(new Vector3Int(i, j, 0), Tile.ColliderType.Sprite);
 
-    }
+				}
 
+
+				if(tilemap.GetTile(new Vector3Int(i, j, 0)) == tiles[Type.Grass])
+                {
+                    if (Random.value > 0.999)
+                    {
+						entities.Add(Instantiate(zombie, new Vector3(tilemap.GetCellCenterWorld(new Vector3Int(i, j, 0)).x, tilemap.GetCellCenterWorld(new Vector3Int(i, j, 0)).y, 0), Quaternion.identity));
+					}
+					else if (Random.value > 0.999)
+                    {
+						entities.Add(Instantiate(car, new Vector3(tilemap.GetCellCenterWorld(new Vector3Int(i, j, 0)).x, tilemap.GetCellCenterWorld(new Vector3Int(i, j, 0)).y, 0), Quaternion.Euler(0, 0, Random.Range(0, 360))));
+					}
+					else if (Random.value > 0.9999)
+                    {
+						int numOfTilesToReplace = 3;
+						for (int k = i - numOfTilesToReplace; k <= i + numOfTilesToReplace && k < DATA_SIZE; k++)
+						{
+							for (int l = j - numOfTilesToReplace; l <= j + numOfTilesToReplace && l < DATA_SIZE; l++)
+							{
+								if (l != j || k != i)
+								{
+                                    if (l >= 1 && k >= 1)
+                                    {
+										tilemap.SetTile(new Vector3Int(k, l, 0), tiles[Type.Grass]);
+										tilemap.SetColliderType(new Vector3Int(k, l, 0), Tile.ColliderType.None);
+									}
+
+								}
+
+							}
+						}
+						Reactor.reactors.Add(Instantiate(reactor, new Vector3(tilemap.GetCellCenterWorld(new Vector3Int(i, j, 0)).x, tilemap.GetCellCenterWorld(new Vector3Int(i, j, 0)).y, 0), Quaternion.Euler(0, 0, Random.Range(0, 360))));
+					}
+					else if (Random.value > 0.995)
+					{
+						entities.Add(Instantiate(ore, new Vector3(tilemap.GetCellCenterWorld(new Vector3Int(i, j, 0)).x, tilemap.GetCellCenterWorld(new Vector3Int(i, j, 0)).y, 0), Quaternion.Euler(0, 0, Random.Range(0, 360))));
+					}
+				}
+			}
+		}
+        while (Reactor.reactors.Count < 4)
+        {
+			for (int i = 0; i < DATA_SIZE; i++)
+			{
+				for (int j = 0; j < DATA_SIZE; j++)
+				{
+					if (tilemap.GetTile(new Vector3Int(i, j, 0)) == tiles[Type.Grass])
+					{
+						if (Random.value > 0.9999)
+						{
+							int numOfTilesToReplace = 3;
+							for (int k = i - numOfTilesToReplace; k <= i + numOfTilesToReplace && k < DATA_SIZE; k++)
+							{
+								for (int l = j - numOfTilesToReplace; l <= j + numOfTilesToReplace && l < DATA_SIZE; l++)
+								{
+									if (l != j || k != i)
+									{
+										if (l >= 1 && k >= 1)
+										{
+											tilemap.SetTile(new Vector3Int(k, l, 0), tiles[Type.Grass]);
+											tilemap.SetColliderType(new Vector3Int(k, l, 0), Tile.ColliderType.None);
+										}
+
+									}
+
+								}
+							}
+							Reactor.reactors.Add(Instantiate(reactor, new Vector3(tilemap.GetCellCenterWorld(new Vector3Int(i, j, 0)).x, tilemap.GetCellCenterWorld(new Vector3Int(i, j, 0)).y, 0), Quaternion.Euler(0, 0, Random.Range(0, 360))));
+						}
+					}
+				}
+			}
+		}
+
+	}
 
 
 
@@ -162,45 +246,15 @@ public class TerrainGenerator : MonoBehaviour
 		}
 		else if(data> baseThreshold + sandThreshold + mountainThreshold + grassThreshold)
         {
-			if ((int)data % robotBaseSporadicity == 0 && Random.value>0.99f)
-			{
-				int numOfTilesToReplace = 1;
-				for(int i = x - numOfTilesToReplace; i <= x + numOfTilesToReplace; i++)
-                {
-					for(int j = y- numOfTilesToReplace; j <= y + numOfTilesToReplace; j++)
-                    {
-                        if (j != i)
-                        {
-							tilemap.SetTile(new Vector3Int(x - 1, y, 0), tiles[Type.Grass]);
-						}
-						
-					}
-                }
 			
-				
-				Reactor.reactors.Add(Instantiate(reactor, new Vector3(tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)).x, tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)).y, 0), Quaternion.Euler(0, 0, Random.Range(0, 360))));
-				return tiles[Type.Grass];
-				
-			}
-			else if((int)data % mountainSporadicity <= mountainSpread&& (int)data < baseThreshold + sandThreshold + mountainThreshold +mountainUpLim && data- (int)data <30f/mountainSporadicity)
+			if((int)data % mountainSporadicity <= mountainSpread&& (int)data < baseThreshold + sandThreshold + mountainThreshold +mountainUpLim && data- (int)data <30f/mountainSporadicity)
             {
-                if (Random.value > 0.95)
-                {
-					entities.Add(Instantiate(ore, new Vector3(tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)).x, tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)).y, 0), Quaternion.Euler(0, 0, Random.Range(0, 360))));
-					return tiles[Type.Grass];
-				}
+                
 				tilemap.SetColliderType(new Vector3Int(x, y, 0), Tile.ColliderType.Sprite);
 				return tiles[Type.Mountain];
 			}
-			if (Random.value > 0.999)
-            {
-				
-				entities.Add(Instantiate(car, new Vector3(tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)).x, tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)).y, 0), Quaternion.Euler(0,0,Random.Range(0,360))));
-            }
-			if (Random.value > 0.999f)
-			{
-				entities.Add(Instantiate(zombie, new Vector3(tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)).x, tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)).y, 0), Quaternion.identity));
-			}
+			
+			
 			return tiles[Type.Grass];
         }
 		
@@ -218,6 +272,9 @@ public class TerrainGenerator : MonoBehaviour
         }
 		entities.Clear();
     }
+
+
+
 
 
 	public void generateLevel()

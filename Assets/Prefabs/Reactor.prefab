@@ -304,11 +304,12 @@ MonoBehaviour:
   moderator: 100
   carbon: {fileID: 11400000, guid: 3525d22f5f6e23f478048c9b870426bc, type: 2}
   uranium: {fileID: 11400000, guid: 450fb59f30ead194196f09d2bf60150a, type: 2}
+  steel: {fileID: 11400000, guid: 206dadda68b14424494802e63193e54d, type: 2}
   spinner: {fileID: 3963960496293619299}
   spinningRods: {fileID: 7667882507646320948}
   baseScale: 0
   numBotsToSpawn: 5
-  botPrefab: {fileID: 7630637095788608577, guid: 0e20595e2f5230949b521fbb8ec06541, type: 3}
+  botPrefab: {fileID: 7630637095788608577, guid: e9b69bcfdbe279d4d8c1bf42b88095d0, type: 3}
   MaxAttackDelay: 1
   MaxMovementSpeed: 3
   MaxTurretRotate: 3

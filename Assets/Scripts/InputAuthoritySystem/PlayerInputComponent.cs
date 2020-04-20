@@ -22,6 +22,9 @@ public class PlayerInputComponent : InputComponent
     }
 
 
+
+
+
     public override Vector2 GetMoveDirection()
     {
         Vector2 desiredMovementSpeed = Vector2.zero;
@@ -41,6 +44,11 @@ public class PlayerInputComponent : InputComponent
         {
             desiredMovementSpeed.x -= 1.0f;
         }
+        if (Input.GetKey(KeyCode.H))
+        {
+            desiredMovementSpeed = gameObject.transform.position - targetTransformComponent.position;
+        }
+
         return desiredMovementSpeed;
     }
 

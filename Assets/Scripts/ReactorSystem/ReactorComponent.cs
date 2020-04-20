@@ -20,6 +20,7 @@ public class ReactorComponent : MonoBehaviour
 
     public ItemObject carbon;
     public ItemObject uranium;
+    public ItemObject steel;
 
 
     public GameObject spinner;
@@ -112,10 +113,16 @@ public class ReactorComponent : MonoBehaviour
     {
         int uraniumCount = 0;
         int carbonCount = 0;
+        int steelCount = 0;
         InventoryComponent inventory = TerrainGenerator.player.GetComponent<InventoryComponent>();
         for (int i = 0; i <inventory.Container.Count;i++)
         {
-            if (inventory.Container[i].item == uranium)
+            if (inventory.Container[i].item == steel)
+            {
+                steelCount = inventory.Container[i].currentAmount;
+            }
+
+            else if (inventory.Container[i].item == uranium)
             {
                 uraniumCount = inventory.Container[i].currentAmount;
             }
@@ -124,13 +131,19 @@ public class ReactorComponent : MonoBehaviour
                 carbonCount = inventory.Container[i].currentAmount;
             }
         }
-        
+
+        if (steelCount >= 20)
+        {
+            SpawnBot();
+            inventory.AddItem(steel, -20);
+        }
+
 
         if(power + 10*uraniumCount <= maxPower)
         {
             inventory.AddItem(uranium,-uraniumCount);
             power += 10*uraniumCount;
-            Debug.Log($"replenshed {uraniumCount}");
+            
         }
         else
         {
@@ -162,7 +175,7 @@ public class ReactorComponent : MonoBehaviour
             int index = (int)Random.Range(0, robots.Count - 1);
             robots[index].GetComponent<MoveAuthorityComponent>().SetAuthority(GetComponent<PlayerInputComponent>());
             robots[index].GetComponent<CameraLookComponent>().ChangeCameraFocus(robots[index]);
-            robots[index].name == "player";
+            robots[index].name = "player";
             GetComponent<PlayerInputComponent>().ChangeControlledObject(robots[index]);
             TerrainGenerator.player = robots[index]; 
         }
@@ -216,11 +229,13 @@ public class ReactorComponent : MonoBehaviour
         
     }
 
+    
+
     public void SpawnBot()
     {
         Vector2 place = Random.insideUnitCircle;
         place = place.normalized;
-        GameObject newBot = Instantiate(botPrefab, gameObject.transform.position + new Vector3(place.x, place.y, 0) * 5, Quaternion.identity);
+        GameObject newBot = Instantiate(botPrefab, gameObject.transform.position + new Vector3(place.x, place.y, 0) * 2, Quaternion.identity);
         newBot.GetComponent<PowerComponent>().SetComponentSharedProperties(turretRotateSpeed, attackDelay, movementSpeed, acceleration, treadsRotationSpeed);
         newBot.SetActive(true);
         newBot.GetComponent<RobotInputComponent>().ownerReactor = this;
@@ -232,7 +247,7 @@ public class ReactorComponent : MonoBehaviour
     {
         Vector2 place = Random.insideUnitCircle;
         place = place.normalized;
-        GameObject newBot = Instantiate(botPrefab, gameObject.transform.position + new Vector3(place.x, place.y, 0) * 5, Quaternion.identity);
+        GameObject newBot = Instantiate(botPrefab, gameObject.transform.position + new Vector3(place.x, place.y, 0) * 2, Quaternion.identity);
         newBot.GetComponent<PowerComponent>().SetComponentSharedProperties(turretRotateSpeed, attackDelay, movementSpeed, acceleration, treadsRotationSpeed);
         newBot.GetComponent<MoveAuthorityComponent>().SetAuthority(GetComponent<PlayerInputComponent>());
         newBot.GetComponent<RobotInputComponent>().ownerReactor = this;
@@ -246,9 +261,11 @@ public class ReactorComponent : MonoBehaviour
 
     void OnDestroy()
     {
-        for (int i = 0; i < robots.Count; i++)
+        for (int i = robots.Count-1; i >= 0; i--)
         {
-            Destroy(robots[i]);
+           Destroy(robots[i]);
+
+
         }
     }
 }

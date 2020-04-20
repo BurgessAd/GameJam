@@ -21,7 +21,7 @@ public class HealthBarComponent : MonoBehaviour
         healthBarImage = Instantiate(healthBarImagePrefab, gameObject.transform.position, Quaternion.identity);
         healthBarImage.GetComponent<SpriteRenderer>().color = Color.green;
         healthBarImage.transform.parent = gameObject.transform;
-        healthBarImage.GetComponent<SpriteRenderer>().sortingOrder = 2;
+        healthBarImage.GetComponent<SpriteRenderer>().sortingOrder = 4;
         GetComponent<HealthComponent>().OnCurrentHealthChanged += HealthChanged;
         if (GetComponent<SpriteRenderer>() != null)
         {
@@ -53,7 +53,15 @@ public class HealthBarComponent : MonoBehaviour
     }
     void HealthChanged(float newHealthPercentage)
     {
-        healthBarImage.transform.localScale = new Vector3(newHealthPercentage * baseScale, healthBarImage.transform.localScale.y, healthBarImage.transform.localScale.z);
+        if (newHealthPercentage <= 0)
+        {
+            healthBarImage.transform.localScale = Vector3.zero;
+        }
+        else
+        {
+            healthBarImage.transform.localScale = new Vector3(newHealthPercentage * baseScale, healthBarImage.transform.localScale.y, healthBarImage.transform.localScale.z);
+        }
+        
     }
     void LateUpdate()
     {

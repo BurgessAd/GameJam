@@ -11,13 +11,14 @@ public class ZombieInputComponent : InputComponent
     private float timer;
     private float wait;
     private Vector2 dir;
-    public float visionDist = 5;
+    public float visionDist = 10;
     public Animator animator;
     private float attackTimer;
     private float attackDelay = 0.5f;
-
-
-
+    private bool attacking = false;
+    public GameObject target;
+    public float readjustTimer = 0;
+    public bool readjusting = false;
     public override Vector2 GetLookDirection()
     {
         return getRandomDir();
@@ -28,8 +29,17 @@ public class ZombieInputComponent : InputComponent
             return getRandomDir();
     }
 
+
+
+    public void readjust()
+    {
+        readjusting = true;
+    }
+
     void Start()
     {
+
+        GetComponent<CircleCollider2D>().radius = visionDist;
         attackTimer = Time.time;
         SharedProperties speed = new SharedProperties();
         speed.Value = 10f;
@@ -40,7 +50,7 @@ public class ZombieInputComponent : InputComponent
         rot.Value = 6f;
         lookdir.SetLookSpeed(rot);
 
-        //gameObject.GetComponent<InventoryComponent>().AddItem(uranium, 2);
+        
 
         gameObject.GetComponent<HealthComponent>().OnObjectDied += Die;
 
@@ -60,26 +70,34 @@ public class ZombieInputComponent : InputComponent
     void FixedUpdate()
     {
 
+        if (readjusting && Time.time - readjustTimer > 1)
+        {
+            readjustTimer = Time.time;
+            dir = transform.right;
+            readjusting = false;
+
+        }
+
 
         animator.SetFloat("Speed", dir.magnitude);
-        if ((TerrainGenerator.player.transform.position - gameObject.transform.position).magnitude < visionDist)
+        if (target!=null&&(target.transform.position - gameObject.transform.position).magnitude < visionDist)
         {
             
-            dir = (Vector2)(TerrainGenerator.player.transform.position - gameObject.transform.position);
-            if((TerrainGenerator.player.transform.position - gameObject.transform.position).magnitude < 3)
+            if(Time.time - readjustTimer > 3)
             {
-                animator.SetBool("Attacking", true);
-;            }
-            else
-            {
-                animator.SetBool("Attacking", false);
+                dir = (Vector2)(target.transform.position - gameObject.transform.position);
             }
+            
+            
+            animator.SetBool("Attacking", attacking);
+                
+;            
 
         }
 
         else if (Time.time - timer > wait)
         {
-            
+            target = null;
 
             wait = Random.Range(0, 3);
             timer = Time.time;
@@ -92,22 +110,67 @@ public class ZombieInputComponent : InputComponent
                 dir = Vector2.zero;
             }
         }
-
-        movementComponent.SetDesiredSpeed(dir);
+        if (attacking)
+        {
+            if ( Time.time - attackTimer > attackDelay)
+            {
+                attackTimer = Time.time;
+                target.GetComponent<HealthComponent>().ProcessHit(5f);
+            }
+            if (readjusting)
+            {
+                movementComponent.SetDesiredSpeed(dir);
+            }
+            else
+            {
+                movementComponent.SetDesiredSpeed(Vector2.zero);
+            }
+            
+        }
+        else
+        {
+            movementComponent.SetDesiredSpeed(dir);
+        }
         lookdir.SetDesiredLookDirection(-dir);
 
     }
-
-    public void OnCollisionStay2D(Collision2D c)
+    public void OnCollisionEnter2D(Collision2D c)
     {
-        
-        if (c.gameObject.name == "player" &&Time.time-attackTimer>attackDelay)
+        if (c.gameObject.name == "Tilemap")
         {
-            Debug.Log("HIT");
-            attackTimer = Time.time;
-            c.gameObject.GetComponent<HealthComponent>().ProcessHit(5f);
+            readjust();
+        }
+
+        if (c.gameObject == target)
+        {
+            
+            attacking = true;
         }
     }
+
+    public void OnCollisionExit2D(Collision2D c)
+    {
+        if (c.gameObject == target)
+        {
+            
+            attacking = false;
+        }
+    }
+
+    
+
+    public void OnTriggerStay2D(Collider2D c)
+    {
+        if (target == null && c.gameObject.GetComponent<EntityTag>()!=null)
+        {
+            if (c.gameObject.GetComponent<EntityTag>().entityType == EntityTag.EntityType.Robot)
+            {
+                target = c.gameObject;
+            }
+            
+        }
+    }
+
 
 
     private Vector2 getRandomDir()

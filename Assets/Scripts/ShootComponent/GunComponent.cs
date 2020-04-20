@@ -28,6 +28,8 @@ public class GunComponent : MonoBehaviour
         attackAnimator.SetFloat("FireSpeed", 1 / fireDelay * animationTimeMultiplier);
         attackAnimator.Play("FireAnimation", -1, 0);
         soundComponent.Play(audioSource);
-        Instantiate(bulletPrefab, gunTransform.position, gunTransform.rotation).SetActive(true);
+        GameObject go = Instantiate(bulletPrefab, gunTransform.position, gunTransform.rotation);
+        go.SetActive(true);
+        go.GetComponent<BulletComponent>().shooter = GetComponentInParent<BoxCollider2D>().gameObject;
     }
 }

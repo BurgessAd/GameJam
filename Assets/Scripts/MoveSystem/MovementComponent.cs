@@ -20,6 +20,8 @@ public class MovementComponent : MonoBehaviour
 
     private LowerAnimator lowerAnimator;
 
+    private SoundPitcherComponent soundPitcher;
+
     public void SetMovementSpeed(SharedProperties movementSpeed, SharedProperties acceleration)
     {
         this.movementSpeed = movementSpeed;
@@ -35,8 +37,19 @@ public class MovementComponent : MonoBehaviour
         {
             lowerAnimator = gameObject.GetComponent<LowerAnimator>();
         }
-        
+        SharedProperties s = new SharedProperties();
+        s.Value = 1;
+        SetMovementSpeed(s,s);
+
+
         body = GetComponent<Rigidbody2D>();
+        
+        soundPitcher = GetComponent<SoundPitcherComponent>();
+        if (soundPitcher != null)
+        {
+            soundPitcher.SetActive(true);
+        }
+        
         Cursor.visible = false;
     }
 
@@ -48,6 +61,11 @@ public class MovementComponent : MonoBehaviour
     void Update()
     {
         lowerAnimator.SetAnimationState(body.velocity);
+        if (soundPitcher!=null)
+        {
+            soundPitcher.SetPitch(body.velocity.magnitude);
+        }
+        
     }
 
     public void SetDesiredSpeed(Vector2 newDesiredSpeed)
@@ -61,8 +79,12 @@ public class MovementComponent : MonoBehaviour
 
     private void Move()
     {
-        currentMoveSpeed.x = Mathf.Clamp(currentMoveSpeed.x + Mathf.Sign(desiredMoveSpeed.x - currentMoveSpeed.x) * Mathf.Clamp(Mathf.Abs(desiredMoveSpeed.x - currentMoveSpeed.x), 0, acceleration.Value), -1.0f, 1.0f);
-        currentMoveSpeed.y = Mathf.Clamp(currentMoveSpeed.y + Mathf.Sign(desiredMoveSpeed.y - currentMoveSpeed.y) * Mathf.Clamp(Mathf.Abs(desiredMoveSpeed.y - currentMoveSpeed.y), 0, acceleration.Value), -1.0f, 1.0f);
-        body.velocity = new Vector2(currentMoveSpeed.x * movementSpeed.Value, currentMoveSpeed.y * movementSpeed.Value);
+        if (desiredMoveSpeed != null)
+        {
+            currentMoveSpeed.x = Mathf.Clamp(currentMoveSpeed.x + Mathf.Sign(desiredMoveSpeed.x - currentMoveSpeed.x) * Mathf.Clamp(Mathf.Abs(desiredMoveSpeed.x - currentMoveSpeed.x), 0, acceleration.Value), -1.0f, 1.0f);
+            currentMoveSpeed.y = Mathf.Clamp(currentMoveSpeed.y + Mathf.Sign(desiredMoveSpeed.y - currentMoveSpeed.y) * Mathf.Clamp(Mathf.Abs(desiredMoveSpeed.y - currentMoveSpeed.y), 0, acceleration.Value), -1.0f, 1.0f);
+            body.velocity = new Vector2(currentMoveSpeed.x * movementSpeed.Value, currentMoveSpeed.y * movementSpeed.Value);
+        }
+
     }
 }

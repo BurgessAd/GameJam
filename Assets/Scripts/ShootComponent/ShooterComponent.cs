@@ -13,9 +13,10 @@ public class ShooterComponent : MonoBehaviour
 
     [SerializeField]
     FireStyle fireStyle = FireStyle.Barrage;
-    private SharedProperties fireDelay;
+    [SerializeField]
+    SharedProperties fireDelay;
 
-    bool currentShootState;
+    bool currentShootState = false;
     bool coroutineStarted = false;
 
     public void SetFireDelay(SharedProperties fireDelay)

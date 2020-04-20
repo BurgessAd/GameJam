@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[CreateAssetMenu]
 [SerializeField]
 public class SharedProperties : ScriptableObject
 {
