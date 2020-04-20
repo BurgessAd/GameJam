@@ -295,7 +295,7 @@ MonoBehaviour:
   maxPower: 100
   maxModerator: 100
   maxHealth: 100
-  numBotsToSpawn: 1
+  numBotsToSpawn: 0
   botPrefab: {fileID: 7630637095788608577, guid: 0dd5eac2130bb2e4581407204a2ccfd7, type: 3}
   MaxAttackDelay: 1
   MaxMovementSpeed: 3
@@ -304,6 +304,7 @@ MonoBehaviour:
   MaxTreadsRotationSpeed: 3
   changedValues: 0
   isPlayer: 0
+  spawnPlayer: 0
 --- !u!114 &-919396512931254149
 MonoBehaviour:
   m_ObjectHideFlags: 0

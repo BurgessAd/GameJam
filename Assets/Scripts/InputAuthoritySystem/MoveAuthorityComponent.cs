@@ -24,8 +24,17 @@ public class MoveAuthorityComponent : MonoBehaviour
         {
             controllingInput = GetComponent<RobotInputComponent>();
         }
-        mouseLookDirection.SetDesiredLookDirection(controllingInput.GetLookDirection());
-        moveDirection.SetDesiredSpeed(controllingInput.GetMoveDirection());
-        shootState.SetShootState(controllingInput.GetShootState());
+        if (mouseLookDirection)
+        {
+            mouseLookDirection.SetDesiredLookDirection(controllingInput.GetLookDirection());
+        }
+        if (moveDirection)
+        {
+            moveDirection.SetDesiredSpeed(controllingInput.GetMoveDirection());
+        }
+        if (shootState)
+        {
+            shootState.SetShootState(controllingInput.GetShootState());
+        }        
     }
 }

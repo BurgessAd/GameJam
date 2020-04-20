@@ -20,6 +20,8 @@ public class MovementComponent : MonoBehaviour
 
     private LowerAnimator lowerAnimator;
 
+    private SoundPitcherComponent soundPitcher;
+
     public void SetMovementSpeed(SharedProperties movementSpeed, SharedProperties acceleration)
     {
         this.movementSpeed = movementSpeed;
@@ -30,6 +32,8 @@ public class MovementComponent : MonoBehaviour
     {
         lowerAnimator = GetComponentInChildren<LowerAnimator>();
         body = GetComponent<Rigidbody2D>();
+        soundPitcher = GetComponent<SoundPitcherComponent>();
+        soundPitcher.SetActive(true);
         Cursor.visible = false;
     }
 
@@ -41,6 +45,8 @@ public class MovementComponent : MonoBehaviour
     void Update()
     {
         lowerAnimator.SetAnimationState(body.velocity);
+
+        soundPitcher.SetPitch(body.velocity.magnitude);
     }
 
     public void SetDesiredSpeed(Vector2 newDesiredSpeed)

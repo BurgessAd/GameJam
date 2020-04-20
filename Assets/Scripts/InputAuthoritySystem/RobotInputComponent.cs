@@ -6,7 +6,7 @@ public class RobotInputComponent : InputComponent
 {
     public override Vector2 GetLookDirection()
     {
-        return Vector2.zero;
+        return new Vector2(0, -1);
     }
 
     public override Vector2 GetMoveDirection()
@@ -21,7 +21,7 @@ public class RobotInputComponent : InputComponent
 
     public override bool GetShootState()
     {
-        return false;
+        return true;
     }
 
 }

@@ -17,10 +17,12 @@ public class BulletComponent : MonoBehaviour
     private Transform bulletTransform;
     [SerializeField]
     private GameObject hitAnimator;
+    [SerializeField]
+    private Rigidbody2D bulletBody;
 
     void Update()
     {
-        bulletTransform.localPosition += bulletTransform.up * bulletSpeed;
+        bulletBody.velocity = bulletTransform.up * bulletSpeed;
         currentBulletTime += 0.1f;
         if (currentBulletTime > bulletSurviveTime)
         {
@@ -28,7 +30,15 @@ public class BulletComponent : MonoBehaviour
         }
     }
 
-
+    //private void OnTriggerStay2D(Collider2D collision)
+    //{
+    //    if (collision.GetComponent<Collider>().GetComponent<HealthComponent>())
+    //    {
+    //        collision.GetComponent<Collider>().GetComponent<HealthComponent>().ProcessHit(bulletDamage);
+    //    }
+    //    Instantiate(hitAnimator, bulletTransform.position, bulletTransform.rotation);
+    //    Destroy(gameObject);
+    //}
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.GetComponent<HealthComponent>())
