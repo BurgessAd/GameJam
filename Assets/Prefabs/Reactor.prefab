@@ -293,8 +293,40 @@ MonoBehaviour:
   MaxAcceleration: 0.5
   MaxTreadsRotationSpeed: 3
   changedValues: 0
+  powerUpClip: {fileID: 0}
+  powerDownClip: {fileID: 0}
+  pitcher:
+  - 0.8
+  - 0.85
+  - 0.9
+  - 1
   isPlayer: 0
   spawnPlayer: 0
+  attackDelays:
+  - 0.7
+  - 0.6
+  - 0.5
+  - 0.4
+  moveSpeeds:
+  - 2.5
+  - 2.7
+  - 3
+  - 3.5
+  accelerations:
+  - 0.015
+  - 0.025
+  - 0.03
+  - 0.035
+  treadsRotations:
+  - 4
+  - 4
+  - 5
+  - 5
+  turretRotateSpeeds:
+  - 1
+  - 1.5
+  - 2
+  - 3
 --- !u!114 &-919396512931254149
 MonoBehaviour:
   m_ObjectHideFlags: 0

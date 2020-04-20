@@ -8,6 +8,7 @@ public class TeamComponent : MonoBehaviour
     public void SetPlayer(bool isPlayer)
     {
         this.isPlayer = isPlayer;
+        Debug.Log(isPlayer);
         if (isPlayer)
         {
             gameObject.layer = LayerMask.NameToLayer("FriendlyCollisions");
@@ -16,5 +17,6 @@ public class TeamComponent : MonoBehaviour
         {
             gameObject.layer = LayerMask.NameToLayer("EnemyCollisions");
         }
+        GunComponent[] gunComponents = GetComponentsInChildren<GunComponent>(); foreach (GunComponent gunComponent in gunComponents) { gunComponent.bulletLayer = gameObject.layer; }
     }
 }

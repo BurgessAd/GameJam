@@ -14,7 +14,7 @@ public class GunComponent : MonoBehaviour
     private Transform gunTransform;
     private AudioSource audioSource;
     private SoundComponent soundComponent;
-    int bulletLayer;
+    public int bulletLayer;
 
     void Awake()
     {
@@ -26,15 +26,7 @@ public class GunComponent : MonoBehaviour
 
     private void Start()
     {
-        bool isPlayerBot = GetComponentInParent<TeamComponent>().isPlayer;
-        if (isPlayerBot)
-        {
-            bulletLayer = LayerMask.NameToLayer("FriendlyCollisions");
-        }
-        else
-        {
-            bulletLayer = LayerMask.NameToLayer("EnemyCollisions");
-        }
+       
     }
 
     public void FireWeapon(float fireDelay)
