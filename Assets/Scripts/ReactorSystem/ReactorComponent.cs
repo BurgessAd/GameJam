@@ -28,6 +28,13 @@ public class ReactorComponent : MonoBehaviour
     public GameObject spinner;
     public GameObject spinningRods;
 
+    enum PowerRegime
+    {
+        Extreme = 3, High = 2, Medium = 1, Low = 0
+    }
+
+    private PowerRegime currentPower;
+
     public float baseScale;
 
     private List<GameObject> robots = new List<GameObject>();
@@ -39,16 +46,16 @@ public class ReactorComponent : MonoBehaviour
     GameObject botPrefab;
 
     [SerializeField]
-    [Range(0.1f,2f)]
+    [Range(0.1f, 2f)]
     private float MaxAttackDelay = 1.0f;
     [SerializeField]
-    [Range(1f,4f)]
+    [Range(1f, 4f)]
     private float MaxMovementSpeed = 3.0f;
     [SerializeField]
-    [Range(1f,4f)]
+    [Range(1f, 4f)]
     private float MaxTurretRotate = 3.0f;
     [SerializeField]
-    [Range(0.01f,0.5f)]
+    [Range(0.01f, 0.5f)]
     private float MaxAcceleration = 0.5f;
     [SerializeField]
     [Range(1f, 4f)]
@@ -56,15 +63,67 @@ public class ReactorComponent : MonoBehaviour
     [SerializeField]
     bool changedValues;
 
+    [SerializeField]
+    private AudioClip powerUpClip;
+
+    [SerializeField]
+    private AudioClip powerDownClip;
+
+
+
+    private AudioSource audioSource;
+
+    [SerializeField]
+    private float[] pitcher = new float[] { 0.8f, 0.85f, 0.9f, 1.0f };
+
 
     public bool isPlayer = false;
 
     [SerializeField]
     bool spawnPlayer;
 
+    [SerializeField]
+    private float[] attackDelays = new float[4];
+    [SerializeField]
+    private float[] moveSpeeds=new float[4];
+    [SerializeField]
+    private float[] accelerations = new float[4];
+    [SerializeField]
+    private float[] treadsRotations = new float[4];
+    [SerializeField]
+    private float[] turretRotateSpeeds = new float[4];
 
+    void PlayPowerUp()
+    {
+        audioSource.clip = powerUpClip;
+        audioSource.pitch = pitcher[Mathf.Clamp((int)currentPower, 0, 3)];
+        audioSource.Play();
+    }
+
+    void PlayPowerDown()
+    {
+        audioSource.clip = powerDownClip;
+        audioSource.pitch = pitcher[Mathf.Clamp((int)currentPower, 0, 3)];
+        audioSource.Play();
+    }
+
+    void CheckPowerRegimeChange()
+    {
+        int newPower = Mathf.FloorToInt(4 * power / maxPower);
+        if (newPower< (int)currentPower)
+        {
+            currentPower = (PowerRegime)newPower;
+            PlayPowerDown();
+        }
+        else if (newPower > (int)currentPower)
+        {
+            currentPower = (PowerRegime)newPower;
+            PlayPowerUp();
+        }
+    }
     void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         attackDelay = ScriptableObject.CreateInstance<SharedProperties>() as SharedProperties;
         movementSpeed = ScriptableObject.CreateInstance<SharedProperties>() as SharedProperties;
         turretRotateSpeed = ScriptableObject.CreateInstance<SharedProperties>() as SharedProperties;
@@ -86,6 +145,15 @@ public class ReactorComponent : MonoBehaviour
         GetComponent<TeamComponent>().SetPlayer(isPlayer);
     }
 
+    void SetPowerLevel(int powerPoint)
+    {
+        attackDelay.Value = attackDelays[powerPoint];
+        movementSpeed.Value = moveSpeeds[powerPoint];
+        acceleration.Value = accelerations[powerPoint];
+        treadsRotationSpeed.Value = treadsRotations[powerPoint];
+        turretRotateSpeed.Value = turretRotateSpeeds[powerPoint];
+        CheckPowerRegimeChange();
+    }
 
     void Update()
     {
@@ -97,7 +165,7 @@ public class ReactorComponent : MonoBehaviour
             {
                 replenishResources();
             }
-            
+            SetPowerLevel(Mathf.Clamp(Mathf.FloorToInt(4 * power/maxPower), 0, 3));
             depleteResources();
             powerBar.transform.localScale = new Vector3( baseScale*power / maxPower, powerBar.transform.localScale.y, powerBar.transform.localScale.z);
             moderatorBar.transform.localScale = new Vector3( baseScale*moderator / maxModerator, moderatorBar.transform.localScale.y, moderatorBar.transform.localScale.z);
