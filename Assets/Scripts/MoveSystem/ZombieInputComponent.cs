@@ -131,7 +131,11 @@ public class ZombieInputComponent : InputComponent
             if ( Time.time - attackTimer > attackDelay)
             {
                 attackTimer = Time.time;
-                target.GetComponent<HealthComponent>().ProcessHit(5f);
+                HealthComponent health = target.GetComponent<HealthComponent>();
+                if (health)
+                {
+                    health.ProcessHit(5.0f);
+                }
             }
             if (readjusting)
             {

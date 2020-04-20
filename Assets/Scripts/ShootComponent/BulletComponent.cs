@@ -4,71 +4,70 @@ using UnityEngine;
 
 public class BulletComponent : MonoBehaviour
 {
+    [Range(0, 20)]
     [SerializeField]
     float bulletDamage = 10.0f;
+    [Range(0, 1)]
     [SerializeField]
     float bulletSpeed = 10.0f;
+    [Range(0, 100)]
     [SerializeField]
-    float bulletSurviveTime = 1.0f;
-    float time;
-    float currentBulletTime = 0.0f;
-    public GameObject shooter;
+    int bulletFramesSurviveTime = 60;
+  
     [SerializeField]
     private Transform bulletTransform;
     [SerializeField]
     private GameObject hitAnimator;
-    [SerializeField]
-    private Rigidbody2D bulletBody;
 
+    private Vector2 currentPos;
+    private Vector2 bulletDir;
+    private RaycastHit2D[] m_Result = new RaycastHit2D[1];
+    private bool inFlight = true;
+    private int currentBulletTime = 0;
+    private int thisLayerMask;
 
-    void Update()
+    public void SetBulletLayerAndStart(int bulletLayer)
     {
-        bulletBody.velocity = bulletTransform.up * bulletSpeed;
-        currentBulletTime += 0.1f;
-        if (currentBulletTime > bulletSurviveTime)
-        {
-            Destroy(gameObject);
-        }
+        currentPos = bulletTransform.position;
+        bulletDir = bulletTransform.up;
+        thisLayerMask = (1 << LayerMask.NameToLayer("FriendlyCollisions")) + (1 << LayerMask.NameToLayer("EnemyCollisions")) + (1 << LayerMask.NameToLayer("MutantCollisions")) + (1 << LayerMask.NameToLayer("TerrainAndObjectCollisions"));
+        thisLayerMask &= ~(1 << bulletLayer);
+        StartCoroutine(RunBullet());
     }
-
-    //private void OnTriggerStay2D(Collider2D collision)
-    //{
-    //    if (collision.GetComponent<Collider>().GetComponent<HealthComponent>())
-    //    {
-    //        collision.GetComponent<Collider>().GetComponent<HealthComponent>().ProcessHit(bulletDamage);
-    //    }
-    //    Instantiate(hitAnimator, bulletTransform.position, bulletTransform.rotation);
-    //    Destroy(gameObject);
-    //}
-    private void OnCollisionEnter2D(Collision2D collision)
+    IEnumerator RunBullet()
     {
-        if (collision.gameObject != shooter)
-        {
-            bool enemy=true;
-            if(collision.gameObject.GetComponent<ReactorComponent>()!=null && collision.gameObject.GetComponent<ReactorComponent>() == shooter.GetComponent<RobotInputComponent>().ownerReactor)
-            {
-                shooter.GetComponent<RobotInputComponent>().readjustPosition();
-                enemy = false;
-            }
-            else if (collision.gameObject.GetComponent<EntityTag>() != null)
-            {
-                if(collision.gameObject.GetComponent<EntityTag>().entityType == EntityTag.EntityType.Robot && collision.gameObject.GetComponent<RobotInputComponent>().ownerReactor == shooter.GetComponent<RobotInputComponent>().ownerReactor)
-                {
-                    shooter.GetComponent<RobotInputComponent>().readjustPosition();
-                    enemy =false;
-                }
-            }
-
-            if (enemy&&collision.collider.GetComponent<HealthComponent>())
-            {
-                collision.collider.GetComponent<HealthComponent>().ProcessHit(bulletDamage);
-            }
-            
-            Instantiate(hitAnimator, bulletTransform.position, bulletTransform.rotation);
-            Destroy(gameObject);
-        }
-
         
+        while (inFlight)
+        {
+            Physics2D.RaycastNonAlloc(currentPos, bulletDir, m_Result, bulletSpeed, thisLayerMask);
+            if (m_Result[0])
+            {
+                bulletTransform.position = m_Result[0].point;
+                inFlight = false;
+                HealthComponent healthObj = m_Result[0].collider.GetComponent<HealthComponent>();
+                if (healthObj)
+                {
+                    healthObj.ProcessHit(bulletDamage);
+                }
+   
+            }
+            else
+            {
+                currentPos += bulletSpeed * bulletDir;
+                bulletTransform.position = currentPos;
+            }
+            currentBulletTime += 1;
+            if (currentBulletTime > bulletFramesSurviveTime)
+            {
+                Destroy(gameObject);
+            }
+            yield return null;
+        }
 
+        Instantiate(hitAnimator, bulletTransform.position, bulletTransform.rotation);
+        yield return null;
+        yield return null;
+        Destroy(gameObject);
     }
+
 }

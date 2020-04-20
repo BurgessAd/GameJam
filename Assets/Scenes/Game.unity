@@ -176,7 +176,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 4.24
+  orthographic size: 4
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -219,7 +219,7 @@ GameObject:
   - component: {fileID: 1136387288}
   - component: {fileID: 1136387290}
   - component: {fileID: 1136387291}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -339,25 +339,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileSprites:
-  - {fileID: 21300000, guid: 43656788e4231b343ab294e2987accad, type: 3}
-  - {fileID: 21300000, guid: c5f154461e045e947b2d20f720a8a6ae, type: 3}
-  - {fileID: 21300000, guid: 391140e578d73e6419948b93f13c7389, type: 3}
-  - {fileID: 21300000, guid: 6e3e02b978b26ad42b10838d103ce572, type: 3}
-  - {fileID: 21300000, guid: 3f68362827a61ae4da22cff21fc4cc80, type: 3}
-  baseThreshold: 300
-  sandThreshold: 355
-  grassThreshold: 89
-  mountainThreshold: 106
-  mountainUpLim: 1130
-  mountainSporadicity: 69
-  robotBaseSporadicity: 101
-  mountainSpread: 7
-  entities: []
+  - {fileID: -8801375530373365420, guid: 303d34a47b98332458117bcfe4f0ca9f, type: 3}
+  - {fileID: -5085900052274576323, guid: 303d34a47b98332458117bcfe4f0ca9f, type: 3}
+  - {fileID: -2301235484796292472, guid: 303d34a47b98332458117bcfe4f0ca9f, type: 3}
+  - {fileID: 3950781754402021326, guid: 303d34a47b98332458117bcfe4f0ca9f, type: 3}
+  - {fileID: -7102514959559303007, guid: 303d34a47b98332458117bcfe4f0ca9f, type: 3}
+  - {fileID: 1385607973525360976, guid: 303d34a47b98332458117bcfe4f0ca9f, type: 3}
+  - {fileID: 6530466101475617446, guid: 303d34a47b98332458117bcfe4f0ca9f, type: 3}
+  - {fileID: -4351231866155328890, guid: 303d34a47b98332458117bcfe4f0ca9f, type: 3}
+  - {fileID: 9111618643095116989, guid: 303d34a47b98332458117bcfe4f0ca9f, type: 3}
+  - {fileID: 1764027372493197677, guid: 303d34a47b98332458117bcfe4f0ca9f, type: 3}
+  - {fileID: 6830334528442610909, guid: 303d34a47b98332458117bcfe4f0ca9f, type: 3}
+  - {fileID: 6863071067818224570, guid: 303d34a47b98332458117bcfe4f0ca9f, type: 3}
+  - {fileID: 4554942972113749629, guid: 303d34a47b98332458117bcfe4f0ca9f, type: 3}
+  - {fileID: -1756263516095170243, guid: 303d34a47b98332458117bcfe4f0ca9f, type: 3}
+  - {fileID: -4695784426346944151, guid: 303d34a47b98332458117bcfe4f0ca9f, type: 3}
+  - {fileID: 5778926860832312810, guid: 303d34a47b98332458117bcfe4f0ca9f, type: 3}
+  baseThreshold: 277
+  sandThreshold: 0
+  grassThreshold: 0
+  mountainThreshold: 0
+  mountainUpLim: 0
+  mountainSporadicity: -4
+  robotBaseSporadicity: 0
+  mountainSpread: 11
   change: 1
-  reactor: {fileID: 1786107847379513477, guid: be63fd9a18d6c0446b197df14d664c2c, type: 3}
+  reactor: {fileID: 1786107847379513477, guid: d30b3fe98380e8e44a3f92648d7e6957, type: 3}
   ore: {fileID: 2995490757547296924, guid: 6e8fb2b2a96861c4aa879e9b2c12095c, type: 3}
-  car: {fileID: 2592051579901166637, guid: f9f55a04ed2b79b439c55d00e9574dd0, type: 3}
-  zombie: {fileID: 5794652123593603727, guid: 992ab0ec599bd214c813577e5248b3eb, type: 3}
+  car: {fileID: 2592051579901166637, guid: 76479dd21d1e12a489029c95667a9a83, type: 3}
+  zombie: {fileID: 5794652123593603727, guid: 2e60b5d18c043e34eb8fd66ce26c45c6, type: 3}
   playerReactor: {fileID: 0}
   mountainTileConfigurations:
   - {fileID: 7433558493603237883, guid: 81fad8fa434d8be4cb5e63a19873227f, type: 3}
@@ -526,7 +536,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -528, y: 272}
+  m_AnchoredPosition: {x: -381, y: 318.37}
   m_SizeDelta: {x: 160, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1789748321
@@ -593,10 +603,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1024, y: 768}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3

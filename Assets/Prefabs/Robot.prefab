@@ -254,9 +254,9 @@ GameObject:
   - component: {fileID: 3021085941073412876}
   - component: {fileID: 7184531209617622583}
   - component: {fileID: 2353557034970996603}
-  - component: {fileID: 8830281596951892240}
   - component: {fileID: 2242172324971919238}
   - component: {fileID: 1551557231894616292}
+  - component: {fileID: -4480282112577479454}
   - component: {fileID: 3012706444644208116}
   - component: {fileID: 3966668413156617781}
   - component: {fileID: -950418982568023134}
@@ -351,19 +351,6 @@ MonoBehaviour:
   shootingComponent: {fileID: 5801857914784951732}
   moveComponent: {fileID: 3012706444644208116}
   treadsAimComponent: {fileID: 5204581530487103835}
---- !u!114 &8830281596951892240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7630637095788608577}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96eb1bbf36872b043b836e85e75219cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lookLength: 1.56
 --- !u!114 &2242172324971919238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -398,6 +385,19 @@ MonoBehaviour:
   mouseLookDirection: {fileID: 986153103636986723}
   moveDirection: {fileID: 3012706444644208116}
   shootState: {fileID: 5801857914784951732}
+--- !u!114 &-4480282112577479454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7630637095788608577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24dd004fe3734a4469a35114576d0861, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPlayer: 0
 --- !u!114 &3012706444644208116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -719,6 +719,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3246346560100578448, guid: 085f69eefe740a94dbaba1b912df96a1, type: 3}
+      propertyPath: bulletPrefab
+      value: 
+      objectReference: {fileID: 533986798966580197, guid: e5c9aea1b46114841a723457997cd2db, type: 3}
     - target: {fileID: 4716561291422605624, guid: 085f69eefe740a94dbaba1b912df96a1, type: 3}
       propertyPath: m_Name
       value: LeftTurret
@@ -797,6 +801,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.x
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 3246346560100578448, guid: 085f69eefe740a94dbaba1b912df96a1, type: 3}
+      propertyPath: bulletPrefab
+      value: 
+      objectReference: {fileID: 533986798966580197, guid: e5c9aea1b46114841a723457997cd2db, type: 3}
     - target: {fileID: 4716561291422605624, guid: 085f69eefe740a94dbaba1b912df96a1, type: 3}
       propertyPath: m_Name
       value: RightTurret

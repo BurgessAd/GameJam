@@ -57,11 +57,7 @@ public class RobotInputComponent : InputComponent
 
     void Start()
     {
-        
-        gameObject.GetComponent<HealthComponent>().OnObjectDied += Die;
-
-        
-        
+        gameObject.GetComponent<HealthComponent>().OnObjectDied += Die;   
         timer = Time.time;
         wait = Random.Range(2, 5);
     }

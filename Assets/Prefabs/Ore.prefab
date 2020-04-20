@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2448524533829850303}
   - component: {fileID: 1927005378872801625}
   - component: {fileID: 7956274599401855247}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3f4e0169f2a73945b3f227463fcfeee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartingHP: 100
+  StartingHP: 30
 --- !u!114 &2448524533829850303
 MonoBehaviour:
   m_ObjectHideFlags: 0
